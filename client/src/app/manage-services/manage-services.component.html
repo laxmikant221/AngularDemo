@@ -1,0 +1,137 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <h1 class="navbar-brand">Hello Admin</h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+    </li> 
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/admin']"  id="manageUser">Home</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav">
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/manage-users']"  id="manageUser">Manage Users</a>
+    </li>
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/manage-services']"  id="manageService">Manage Services</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="openServiceForm()">Add Services</a>
+    </li>
+  </ul>
+</div>
+</nav>
+<router-outlet></router-outlet>
+
+
+<div class="container-fluid">
+  <div class="container" *ngIf="formFlag">
+    <h3 class="text-center">New Services</h3>
+    <form [formGroup]="serviceForm">
+      <div class="form-group">
+        <label for="InputService">Service Name</label>
+        <input formControlName="serviceName" type="text" class="form-control" id="InputService"  placeholder="Enter Service Name" > 
+      </div>
+      <div class="form-group">
+        <label for="InputCategory">Service Category</label>
+        <select class="form-control" formControlName="serviceCategory" id="InputCategory">
+          <option>Select Service Type</option>
+          <option selected="selected">Carpenter</option>
+          <option>Driver</option>
+          <option>Gardener</option>
+          <option>Electrician</option>
+          <option>Peon</option>
+          <option>Plumber</option>
+          <option>Washerman</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Service Description</label>
+        <textarea formControlName="description" class="form-control" 
+        id="description">
+        </textarea>
+      </div>
+      <fieldset formGroupName="price">
+        <div class="form-group form-inline">
+          <label for="priceHour">Price Per Hour:</label>
+          <input type="text" formControlName="priceHour" id="priceHour" 
+          class="form-control">
+
+          <label for="priceDay">Price Per Day:</label>
+          <input type="text" formControlName="priceDay" id="priceDay" 
+          class="form-control">
+
+          <label for="priceMonth">Price Per Month:</label>
+          <input type="text" formControlName="priceMonth" id="priceMonth" 
+          class="form-control">
+        </div>
+      </fieldset>
+      <div class="form-group">
+        <label for="InputAddress">Address</label>
+        <input formControlName="address" type="text" class="form-control" id="InputAddress"  placeholder="Enter Your address" > 
+      </div>
+
+      <div class="form-group">
+        <label for="InputZip"> Area Zip-Code</label>
+        <input formControlName="zipCode" type="text" class="form-control" id="InputZip"  placeholder="Enter Zip Code" > 
+      </div>
+
+      <div class="form-group">
+        <label for="image">Please upload an image</label>
+        <input formControlName="image" id="image" name="image" type="file" 
+        (change)="fileChangeEvent($event)" placeholder="Upload a file..." multiple/>
+      </div>
+      <img [src]="url" height="100"> <br/>
+      <button type="button" class="btn btn-success" (click)="saveServices()">
+        Submit
+      </button>
+      <button type="button" class="btn btn-danger" (click)="formFlag=false">
+        Cancel
+      </button>
+    </form>
+  </div>
+  <div class="container-fluid" id="serviceList" *ngIf="!formFlag">
+    <h3 class="text-center">Total Number of Available Services: ({{serviceCount}})
+    </h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-xs-1">Sr. NO.</th>
+          <th>Service Name</th>
+          <th>Service Category</th>
+          <th>Description</th>
+          <th>Price/Hour</th>
+          <th>Price/Day</th>
+          <th>Price/Month</th>
+          <th>Address</th>
+          <th>Zip-Code</th>
+          <th>Attachments</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of services; let i = index ">
+          <td>{{ i+1 }}</td>
+          <td>{{ service.serviceName }}</td>
+          <td>{{ service.serviceCategory}}</td>
+          <td>{{ service.description }}</td>
+          <td>{{ service.price.priceHour }}</td>
+          <td>{{ service.price.priceDay }}</td>
+          <td>{{ service.price.priceMonth }}</td>
+          <td>{{ service.address }}</td>
+          <td>{{ service.zipCode }}</td>
+          <td><img src="../assets/images/{{ service.imageUrl }}" height="50" 
+            width="50"></td>
+          <td>
+            <a [routerLink]="['/edit-services',service._id]">Edit</a>
+            <a class="nav-link"(click)="deleteServiceById(service._id)">/Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>  
+</div>

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <h1 class="navbar-brand">Hello Admin</h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+    </li>
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/admin']"  id="manageUser">Home</a>
+    </li> 
+  </ul>
+  <ul class="navbar-nav">
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/manage-users']"  id="manageUser">Manage Users</a>
+    </li>
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/manage-services']"  id="manageService">Manage Services</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="adminLogout()">Log out</a>
+    </li>
+  </ul>
+</div>
+</nav>
+<router-outlet></router-outlet>
+<div class="container-fluid" id="outer">
+  <div class="container">
+  	<h4>Your Profile</h4>
+  	<table>
+  		<tbody>
+  			<tr>
+  				<td>Name:</td>
+  				<td>{{username}}</td>
+  			</tr>
+  			<tr>
+  				<td>E-mail:</td>
+  				<td>{{email}}</td>
+  			</tr>
+  		</tbody>
+  	</table>
+  </div>
+</div>

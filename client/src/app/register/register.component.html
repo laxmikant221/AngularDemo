@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">ServiceAtHome</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">Home
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/register']" routerLinkActive="active">Register
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" id="navdropdown" data-toggle="dropdown">
+        Log In
+      </a>
+      <div class="dropdown-menu">
+        <a [routerLink]="['/login']"  class="dropdown-item">
+          User
+        </a>
+        <a [routerLink]="['/adminlogin']"  class="dropdown-item">
+          Admin
+        </a>
+      </div>
+    </li>
+  </ul>
+</div>
+</nav>
+<router-outlet></router-outlet>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <form [formGroup]="registerForm">
+      <div class="form-group">
+        <label for="InputEmail1">Email address</label>
+        <input formControlName="email" type="email" class="form-control" id="InputEmail1"  placeholder="Enter email" required> 
+        <!-- <div class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
+          <div [hidden]="!registerForm.controls['email'].errors.required">
+           email is required.
+          </div>
+        </div> -->
+      </div>
+      <div class="form-group">
+        <label for="InputUsername">Username</label>
+        <input formControlName="username" type="text" class="form-control" id="InputUsername"  placeholder="username" required>
+        
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input formControlName="password" type="password" class="form-control" id="passwordInput"  placeholder="password" required>
+        
+      </div>
+      <div class="form-group">
+        <label for="CpasswordInput">Confirm Password</label>
+        <input formControlName="cpass" type="password" class="form-control" id="CpasswordInput"  placeholder="password" required>
+        
+      </div>
+      <!-- <div class="form-group">
+        <label for="InputAdminCode">Admin Code</label>
+        <input formControlName="adminCode" type="text" class="form-control" id="InputAdminCode"  placeholder="Admin Secret Code" required>
+        
+      </div> -->
+      <div class="form-group" style="text-align:center;">
+        <button type="button" class="btn btn-dark" (click)="register()">Register</button>
+        <button type="button" class="btn btn-secondary" (click)="moveToLogin()">Log in</button>
+      </div>
+    </form>
+  </div>
+</div>

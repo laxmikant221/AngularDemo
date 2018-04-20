@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="container"*ngFor="let s of service" >
+    <h3 class="text-center">Edit Service</h3>
+    <form [formGroup]="editServiceForm">
+      <div class="form-group">
+        <label for="InputService">Service Name</label>
+        <input formControlName="sName" type="text" class="form-control" id="InputService"  [(ngModel)]="s.serviceName" >
+      </div>
+      <div class="form-group">
+        <label for="InputCategory">Service Category</label>
+        <select class="form-control" formControlName="sCategory" id="InputCategory" 
+         [(ngModel)]="s.serviceCategory">
+          <option>Select Service Type</option>
+          <option>Carpenter</option>
+          <option>Driver</option>
+          <option>Gardener</option>
+          <option>Electrician</option>
+          <option>Peon</option>
+          <option>Plumber</option>
+          <option>Washerman</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Service Description</label>
+        <textarea formControlName="description" class="form-control" 
+        id="description" [(ngModel)]="s.description">
+        </textarea>
+      </div>
+      <fieldset formGroupName="price" class="form-inline">
+        <div class="form-group">
+          <label for="priceHour">Price Per Hour:</label>
+          <input type="text" formControlName="priceHour" id="priceHour" class="form-control" [(ngModel)]="s.price.priceHour">
+        
+          <label for="priceDay">Price Per Day:</label>
+          <input type="text" formControlName="priceDay" id="priceDay" class="form-control" [(ngModel)]="s.price.priceDay">
+        
+          <label for="priceMonth">Price Per Month:</label>
+          <input type="text" formControlName="priceMonth" id="priceMonth" class="form-control" [(ngModel)]="s.price.priceMonth">
+        </div>
+      </fieldset>
+      <div class="form-group">
+        <label for="InputAddress">Address</label>
+        <input formControlName="address" type="address" class="form-control" id="InputAddress"  [(ngModel)]="s.address" > 
+      </div>
+
+      <div class="form-group">
+        <label for="InputZip"> Area Zip-Code</label>
+        <input formControlName="zipCode" type="text" class="form-control" id="InputZip"  [(ngModel)]="s.zipCode" > 
+      </div>
+      <button type="button" class="btn btn-success" (click)="updateService()">
+        Submit
+      </button>
+      <button type="button" class="btn btn-danger">
+        Cancel
+      </button>
+    </form>
+  </div>

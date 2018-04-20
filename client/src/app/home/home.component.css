@@ -1,0 +1,6 @@
+.card {
+	width: 300px;
+	height: 350px;
+	float: left;
+	/*display: inline-grid;*/
+}
