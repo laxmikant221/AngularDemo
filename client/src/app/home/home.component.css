@@ -1,6 +1,10 @@
-.card {
+.searchCard {
 	width: 300px;
 	height: 350px;
 	float: left;
 	/*display: inline-grid;*/
+}
+#serviceDetail {
+	width: 300px;
+	height: 300px;
 }

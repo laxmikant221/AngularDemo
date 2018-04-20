@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit {
   searchword;
   showResults:boolean=false;
   isResultFound:boolean=false;
-  // id:String='';
-  descriptionFlag: boolean = false;
   descriptionData: any;
 
   searchForm:FormGroup = new FormGroup({
@@ -57,13 +55,10 @@ export class HomeComponent implements OnInit {
   }
 
   serviceDescription(id) {
-    // this.id = id;
     this._servicedataService.getServiceDescription(id)
     .subscribe(
         data=>{
           this.descriptionData = data
-          this.descriptionFlag =true
-          this.showResults = false;
         },
         error=>{
           console.log("Ooops there was some error")
