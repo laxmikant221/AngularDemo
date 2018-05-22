@@ -10,7 +10,6 @@ import { UserService } from '../services/user.service';
 })
 export class LoginComponent implements OnInit {
 
-
   loginForm : FormGroup=new FormGroup({
     email:new FormControl(null,[Validators.email,Validators.required]),
     password:new FormControl(null, Validators.required)
@@ -29,14 +28,13 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    // console.log(this.loginForm.value.role);
-    // var role = this.loginForm.role;
     if(!this.loginForm.valid){
       console.log('Invalid');return;
     }
     this._user.login(JSON.stringify(this.loginForm.value))
     .subscribe(
       data=>{
+        localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
         console.log(this._user.isAnyLoggedIn);
         this._user.isLoggedIn = true;
         this._user.isAnyLoggedIn = true;

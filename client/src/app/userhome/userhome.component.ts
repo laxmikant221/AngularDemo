@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { ServiceDataService } from '../services/service-data.service';
 import { Router } from '@angular/router';
 import {FormGroup,FormControl,Validators} from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -16,59 +17,66 @@ export class UserhomeComponent implements OnInit {
   username:String='';
   email: String='';
   serviceList: any;
+  bookingDetails: any;
   url: '';
   servicesCount: String='';
-  filesToUpload: Array<File> = [];
+  serviceId: String = localStorage.getItem('BookingServiceId');
+  descriptionData : any;
+  bookedServiceDescription: any;
+  isBooking:boolean=false;
+  isProceed:boolean=false;
+  isHistory:boolean=false;
+  i: number;
+  bookArray: String[];
 
-  servicesForm:FormGroup = new FormGroup({
-    sName:new FormControl(null,Validators.required),
-    sCategory: new FormControl(null, Validators.required),
+  serviceBookingForm:FormGroup = new FormGroup({
+    serviceId: new FormControl(null),
+    customerName:new FormControl(null,Validators.required),
+    mobileNumber: new FormControl(null, Validators.required),
     address: new FormControl(null, Validators.required),
-    zipCode: new FormControl(null, Validators.required),
-    email: new FormControl(null, Validators.required)
+    pinCode: new FormControl(null, Validators.required),
+    email: new FormControl(null)
   })
 
   constructor(private _user:UserService, private _router:Router, 
-    private _http:HttpClient) { 
+    private _http:HttpClient, private _servicedataService:ServiceDataService) { 
     this._user.user()
     .subscribe(
      data=>this.addName(data),
      error=>this._router.navigate(['/login']));
+
+    if(this.serviceId) {
+      this._servicedataService.getServiceDescription(this.serviceId)
+        .subscribe(
+          data=>{
+            this.descriptionData = data
+            this.isBooking = true;
+          },
+          error=>{
+            console.log("Ooops there was some error")
+          }
+        )
+      }
   }
 
   addName(data){
     this.username = data.username;
     this.email = data.email;
-    console.log(data);
   }
   addServiceList(data) {
     this.serviceList = data;
     this.servicesCount = this.serviceList.length;
-    console.log(data);
   }
 
   ngOnInit() {
-  }
-
-  saveServices(){
-    console.log(this.servicesForm.value);
-    if(!this.servicesForm.valid){
-      console.log('Invalid Form'); return;
-    }
-    this._user.saveServices(JSON.stringify(this.servicesForm.value))
-    .subscribe(
-      data=> {
-        console.log(data); 
-        this._router.navigate(['/user']);},
-        error=>console.error(error)
-        )
   }
 
   logout(){
     this._user.logout()
     .subscribe(
       data=>{
-        console.log(data);
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('BookingServiceId');
         this._user.isLoggedIn = false;
         this._user.isAnyLoggedIn = false;
         this._router.navigate(['/login'])
@@ -76,41 +84,63 @@ export class UserhomeComponent implements OnInit {
       error=>console.error(error)
       )
   }
-  imageForm:FormGroup = new FormGroup({
-    sName:new FormControl(null,Validators.required),
-    sCategory: new FormControl(null, Validators.required),
-    address: new FormControl(null, Validators.required),
-    zipCode: new FormControl(null, Validators.required),
-    email: new FormControl(null, Validators.required),
-    image: new FormControl(null, Validators.required)})
 
-  upload() {
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    for(let i =0; i < files.length; i++){
-      formData.append("uploads[]", files[i], files[i]['name']);
-    }
-    formData.append("forminput", JSON.stringify(this.imageForm.value));
-    console.log('form data variable :   '+ formData.toString());
-    this._http.post('http://127.0.0.1:3000/users/upload', formData)
-    .subscribe(files => console.log('files', files));
-  }
-
-  fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      var reader = new FileReader();
-      reader.readAsDataURL(fileInput.target.files[0]); 
-      reader.onload = (fileInput) => {
-        this.url = reader.result;
-      }
-    }
-  }
   viewHistory(email) {
-    this._user.UserServiceList(this.email)
+    this._user.userBookings(this.email)
     .subscribe(
-      data=>{this.addServiceList(data);console.log(this.email);},
+      data=> {
+        this.bookingDetails = data;
+        console.log(this.bookingDetails.length); 
+      },
       error=>this._router.navigate(['/user']))
+    for(this.i=0;this.i<this.bookingDetails.length;this.i++) {
+      this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
+      .subscribe(
+        data=>{
+          this.isHistory = true;
+          this.bookedServiceDescription = data;
+          this.bookArray.push(this.bookedServiceDescription);
+        },
+        error=>{
+          console.log("Ooops there was some error")
+        }
+      )
+    }
 
+  }
+
+  proceed(id) {
+    this.isProceed = true;
+    this.isBooking = false;
+
+  }
+  cancelBooking() {
+    if(confirm("Are you sure you want to Cancel this Booking")) { 
+      localStorage.removeItem('BookingServiceId');
+      this.isBooking = false;
+    }
+  }
+
+  confirmBooking() {
+    this.serviceBookingForm.value.email = this.email;
+    this.serviceBookingForm.value.serviceId = this.serviceId;
+    console.log(this.serviceBookingForm.value);
+    if(!this.serviceBookingForm.valid){
+      console.log('Invalid Form'); return;
+    }
+    this._user.bookServices(JSON.stringify(this.serviceBookingForm.value))
+    .subscribe(
+      data=> {
+        alert("Booking Successfull!!!!!!!!");
+        this.isBooking = false;
+        this.isProceed = false; 
+        this._router.navigate(['/user']);
+      },
+      error=>console.error(error)
+    )
+  }
+  goBack() {
+    this.isProceed = false;
+    this.isBooking = true;
   }
 }

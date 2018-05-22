@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {FormGroup,FormControl,Validators} from '@angular/forms';
 import { ServiceDataService } from '../services/service-data.service';
 import {MatSort, MatSortable, MatTableDataSource } from '@angular/material';
-
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit {
     search:new FormControl(null,Validators.minLength(5)) 
   })
 
-  constructor(private _router:Router, private _servicedataService:ServiceDataService){
+  constructor(private _router:Router, private _user: UserService,
+   private _servicedataService:ServiceDataService){
 
   }
 
@@ -64,6 +65,19 @@ export class HomeComponent implements OnInit {
           console.log("Ooops there was some error")
         }
       )
+  }
+
+  bookingLogin(id) {
+    
+    if(localStorage.getItem('currentUser')) {
+      localStorage.setItem('BookingServiceId', id);
+      this._router.navigate(['/user'])
+    }
+    else {
+      alert("You Must Log In first!!!!")
+      localStorage.setItem('BookingServiceId', id);
+      this._router.navigate(['login'])
+    }
   }
 
 }

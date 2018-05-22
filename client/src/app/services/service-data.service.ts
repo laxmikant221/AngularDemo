@@ -44,11 +44,18 @@ export class ServiceDataService {
     });
   }
 
-  getServiceDescription(id:any) {debugger
+  getServiceDescription(id:any) {
     return this._http.get('http://127.0.0.1:3000/api/getServiceDescription',{
       params: { id: id},
       observe:'body',
       headers:new HttpHeaders().append('Content-Type','application/json')
+    })
+  }
+
+  getLoginStatus() {
+    return this._http.get('http://127.0.0.1:3000/api/getLoginStatus',{
+      observe: 'body',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
     })
   }
 

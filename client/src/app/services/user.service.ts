@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-  public isLoggedIn: boolean= false;
+  public isLoggedIn: boolean = false;
   public isAdminLoggedIn: boolean = false;
   public isAnyLoggedIn: boolean = false;
   constructor(private _http:HttpClient) { }
@@ -73,18 +73,18 @@ export class UserService {
 
   }
 
-  saveServices(body:any){
-    return this._http.post('http://127.0.0.1:3000/api/saveservices',body,{
+  bookServices(body:any){
+    return this._http.post('http://127.0.0.1:3000/api/bookServices',body,{
       observe:'body',
       headers:new HttpHeaders().append('Content-Type','application/json')
     });
   }
 
-  UserServiceList(email:any){
-    return this._http.get('http://127.0.0.1:3000/api/listuserservices',{
+  userBookings(email:any){
+    return this._http.get('http://127.0.0.1:3000/api/userBookings',{
       params: { email: email},
       observe:'body',
-      withCredentials:true,
+      
       headers:new HttpHeaders().append('Content-Type','application/json')
     })
 
