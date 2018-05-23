@@ -72,6 +72,11 @@
       <label for="pinCode">Please Enter Pin Code</label>
       <input type="text" formControlName="pinCode" id="pinCode" class="form-control" name="pinCode">
     </div>
+    <div class="form-group">
+      <label for="timeSlot">Choose Time Slot For Serving:</label>
+      <input type="radio" formControlName="timeSlot" name="timeSlot" value="Morning">Morning
+      <input type="radio" formControlName="timeSlot" name="timeSlot" value="Evening">Evening
+    </div>
     <button type="button" class="btn btn-success mr-auto" (click)="confirmBooking()">Confirm Booking</button>
     <button type="button" class="btn btn-primary" (click)="goBack()">Go Back</button>
   </form>
@@ -79,7 +84,7 @@
 <div class="container col-sm-5" *ngIf=(isHistory)>
   <h5>Services You have booked</h5>
   <div class="container" >
-    <div class="container" *ngFor="let service of descriptionData">
+    <!-- <div class="container" *ngFor="let service of descriptionData">
       <div class="card col-sm-6" id="serviceDetail">
         <img class="card-img-top" src="../assets/images/{{ service.imageUrl }}" 
         alt="Search image" width="100" height="100">
@@ -94,15 +99,36 @@
       <p><b>Description:</b> {{service.description}}</p>
       <p><b>Address:</b> {{service.address | titlecase}}, {{service.zipCode}}
       </p>
-    </div>
+    </div> -->
     <div class="container" *ngFor="let booking of bookingDetails">
-      <p><b>Customer Name:</b>{{booking.customerName | titlecase}}</p>
-      <p><b>Mobile Number:</b>{{booking.mobileNumber}}</p>
-      <p><b>Customer's Address:</b>{{booking.address | titlecase}}</p>
-      <p><b>Pin Code:</b>{{booking.pinCode}}</p>
+      <div class="container">
+        <p><b>Customer Name:</b>{{booking.customerName | titlecase}}</p>
+        <p><b>Mobile Number:</b>{{booking.mobileNumber}}</p>
+        <p><b>Customer's Address:</b>{{booking.address | titlecase}}</p>
+        <p><b>Pin Code:</b>{{booking.pinCode}}</p>
+        <p><b>Time Slot:</b>{{booking.timeSlot}}</p>
+        <button (click)="serviceDescription(booking.serviceId)"><b>Service description</b></button>
+      </div>
+      <div class="container" *ngFor="let service of ServceDescriptionData">
+        <div class="card col-sm-6" id="serviceDetail">
+          <img class="card-img-top" src="../assets/images/{{ service.imageUrl }}" 
+          alt="Search image" width="100" height="100">
+          <div class="card-body">
+            <h4 class="card-title"> {{ service.serviceCategory | titlecase }}</h4>
+            <p class="card-text">Price per Hour: {{ service.price.priceHour | titlecase}}</p>
+            <p class="card-text">Price per Day: {{ service.price.priceDay | titlecase}}</p>
+            <p class="card-text">Price per Month: {{ service.price.priceMonth | titlecase}}</p>
+          </div>
+        </div>
+        <p><b>Service Name:</b> {{service.serviceName | titlecase}}</p>
+        <p><b>Description:</b> {{service.description}}</p>
+        <p><b>Address:</b> {{service.address | titlecase}}, {{service.zipCode}}
+        </p>
+      </div>
+      <p><b><hr></b></p>
     </div>
   </div>
-  <div class="container"><h2>Example 3 </h2></div>
+  <!-- <div class="container"><h2>Example 3 </h2></div>
 <div id="exTab3" class="container"> 
   <ul class="nav nav-pills">
     <li class="active">
@@ -143,4 +169,4 @@
   </div>
   </div>
 </div>
-
+ -->

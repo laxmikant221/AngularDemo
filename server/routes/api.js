@@ -207,8 +207,9 @@ router.post('/bookServices',function(req,res,next){
     mobileNumber: req.body.mobileNumber,
     address: req.body.address,
     pinCode: req.body.pinCode,
+    timeSlot: req.body.timeSlot,
     serviceId: req.body.serviceId,
-    creation_dt: Date.now(),
+    creation_dt: Date.now()
     
   });
   try {
@@ -225,15 +226,44 @@ router.get('/userBookings',function(req,res,next){
   BookServices.find({"email": req.query.email},function(err, bookedServices) { 
     if (err) return next(err);
     
-//     else { 
-//     Service.find({"_id": bookedServices.serviceId},function(err,bookingDetails){
-//       if(err) return next(err);
-//       return res.json(bookingDetails);
-//     })
+// //     else { 
+// //     Service.find({"_id": bookedServices.serviceId},function(err,bookingDetails){
+// //       if(err) return next(err);
+// //       return res.json(bookingDetails);
+// //     })
     
-// }
+// // }
     return res.json(bookedServices);
   });
 
-});
+  // const book = BookServices.aggregate([
+  //   {
+  //     $lookup:
+  //     {
+  //       from: 'Service',
+  //       localField: 'serviceId',
+  //       foreignField: '_id',
+  //       as: 'bookingData'
+  //     }}])
+  // console.log(book);
+  // return res.json(book);
+    // }]).toArray(function(err, res){
+    //   if(err) throw err;
+    //   console.log(JSON.stringify(res));
+    // })
+    // // return res.json(err);
+    // Service.find({}).populate('BookServices')
+    // .exec(function(err,res) {
+    //   if(err) console.log(err)
+    //     return res;
+    // })
+  });
+
+// });
+router.get('/serviceBooked', function(req,res,next){
+  BookServices.find({},function(err,result){
+    if(err) return next(err)
+      return res.json(result)
+  })
+})
 module.exports = router;

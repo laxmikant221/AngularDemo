@@ -6,9 +6,10 @@ var schema = new Schema({
   customerName: {type:String, require:true},
   mobileNumber: {type:String, require:true},
   address: {type:String, require:true},
-  pinCode: {type: Object, require:true},
+  pinCode: {type: String, require:true},
+  timeSlot: {type: String, require:true},
   email:{type:String, require:true},
-  creationDate:{type:Date, require:true}
+  creation_dt:{type:Date, require:true},
 });
 
 module.exports = mongoose.model('BookServices',schema);

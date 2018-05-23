@@ -43,3 +43,14 @@
   	</table>
   </div>
 </div>
+<div class="container col-sm-6">
+  <h5>Services Booked</h5>
+  <div class="container" *ngFor="let booking of bookedServices">
+    <p><b><hr></b></p>
+    <p><b>Customer Name:</b>{{booking.customerName | titlecase}}</p>
+    <p><b>Mobile Number:</b>{{booking.mobileNumber}}</p>
+    <p><b>Customer's Address:</b>{{booking.address | titlecase}}</p>
+    <p><b>Pin Code:</b>{{booking.pinCode}}</p>
+    <p><b>Time Slot:</b>{{booking.timeSlot}}</p>
+  </div>
+</div>

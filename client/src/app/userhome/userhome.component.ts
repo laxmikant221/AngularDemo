@@ -18,16 +18,18 @@ export class UserhomeComponent implements OnInit {
   email: String='';
   serviceList: any;
   bookingDetails: any;
-  url: '';
-  servicesCount: String='';
+  // url: '';
+  // servicesCount: String='';
   serviceId: String = localStorage.getItem('BookingServiceId');
   descriptionData : any;
   bookedServiceDescription: any;
   isBooking:boolean=false;
   isProceed:boolean=false;
   isHistory:boolean=false;
-  i: number;
-  bookArray: String[];
+  i:number=0;
+  bookArray:any[]=[];
+  ServceDescriptionData:any;
+  completed_requests:number=0;
 
   serviceBookingForm:FormGroup = new FormGroup({
     serviceId: new FormControl(null),
@@ -35,6 +37,7 @@ export class UserhomeComponent implements OnInit {
     mobileNumber: new FormControl(null, Validators.required),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
+    timeSlot: new FormControl(null, Validators.required),
     email: new FormControl(null)
   })
 
@@ -59,14 +62,28 @@ export class UserhomeComponent implements OnInit {
       }
   }
 
+  serviceDescription(id) {
+    console.log(id);
+    this._servicedataService.getServiceDescription(id)
+    .subscribe(
+      data=>{
+        this.ServceDescriptionData = data
+        console.log(this.ServceDescriptionData)
+      },
+      error=>{
+        console.log("Ooops there was some error")
+      }
+    )
+  }
+
   addName(data){
     this.username = data.username;
     this.email = data.email;
   }
-  addServiceList(data) {
-    this.serviceList = data;
-    this.servicesCount = this.serviceList.length;
-  }
+  // addServiceList(data) {
+  //   this.serviceList = data;
+  //   this.servicesCount = this.serviceList.length;
+  // }
 
   ngOnInit() {
   }
@@ -86,26 +103,39 @@ export class UserhomeComponent implements OnInit {
   }
 
   viewHistory(email) {
+    var i:number;
     this._user.userBookings(this.email)
     .subscribe(
       data=> {
         this.bookingDetails = data;
-        console.log(this.bookingDetails.length); 
+        this.isHistory = true;
+        console.log(this.bookingDetails);
+        for (i=0;i<this.bookingDetails.length;i++) {
+          this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
+
+            this.bookArray.push(data);
+            // completed_requests++;
+            // if (completed_requests == this.bookingDetails.length) {
+            // All download done, process responses array
+            console.log(bookArray);
+          // }
+        
+        } 
       },
       error=>this._router.navigate(['/user']))
-    for(this.i=0;this.i<this.bookingDetails.length;this.i++) {
-      this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
-      .subscribe(
-        data=>{
-          this.isHistory = true;
-          this.bookedServiceDescription = data;
-          this.bookArray.push(this.bookedServiceDescription);
-        },
-        error=>{
-          console.log("Ooops there was some error")
-        }
-      )
-    }
+    // for(this.i=0;this.i<this.bookingDetails.length;this.i++) {
+    //   this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
+    //   .subscribe(
+    //     data=>{
+    //       this.isHistory = true;
+    //       this.bookedServiceDescription = data;
+    //       this.bookArray.push(this.bookedServiceDescription);
+    //     },
+    //     error=>{
+    //       console.log("Ooops there was some error")
+    //     }
+    //   )
+    // }
 
   }
 

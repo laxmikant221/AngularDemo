@@ -13,12 +13,18 @@ export class AdminComponent implements OnInit {
   users: any;
   username:String='';
   email: String='';
+  bookedServices: any;
   constructor(private _user:UserService, private _router:Router) { 
     this._user.isAdminLoggedIn = true;
     this._user.admin()
     .subscribe(
       data=>this.addName(data),
       error=>this._router.navigate(['/adminlogin'])
+      )
+    this._user.serviceBooked()
+    .subscribe(
+      data=>this.bookedServices=data,
+      error=>alert("oops there was some error")
       )
   }
 
