@@ -36,7 +36,7 @@ export class ServiceDataService {
     });
   }
 
-  deleteServiceById(id:any) {
+  deleteServiceById(id:any) { 
     return this._http.delete('http://127.0.0.1:3000/api/deleteServiceById',{
       params: {id: id},
       observe:'body',
@@ -52,11 +52,26 @@ export class ServiceDataService {
     })
   }
 
-  getLoginStatus() {
-    return this._http.get('http://127.0.0.1:3000/api/getLoginStatus',{
-      observe: 'body',
+  // getLoginStatus() {
+  //   return this._http.get('http://127.0.0.1:3000/api/getLoginStatus',{
+  //     observe: 'body',
+  //     headers: new HttpHeaders().append('Content-Type', 'application/json')
+  //   })
+  // }
+
+  getBookingInfoById(id) {
+    return this._http.get('http://127.0.0.1:3000/api/getBookingInfoById',{
+      params: { id: id},
+      observe:'body',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     })
   }
 
+  updateBookingById(body:any, id){
+    return this._http.put('http://127.0.0.1:3000/api/updateBookingById',body,{
+      params: {id: id},
+      observe:'body',
+      headers:new HttpHeaders().append('Content-Type','application/json')
+    });
+  }
 }

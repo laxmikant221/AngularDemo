@@ -8,13 +8,12 @@ import {CanActivate,ActivatedRouteSnapshot,RouterStateSnapshot } from "@angular/
 export class AdminGuard implements CanActivate {
  constructor(private userService: UserService,private _router:Router) {}
 
- canActivate( next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-   if (this.userService.isAdminLoggedIn) {
-   	// this._router.navigate(['./adminlogin']);
+ canActivate( next: ActivatedRouteSnapshot,state: RouterStateSnapshot)
+ : Observable<boolean> | Promise<boolean> | boolean {
+   if (localStorage.getItem('adminUser')) {
      return true;
    } else {
-     // window.alert("You don't have permission to view this page");
+    alert("You Don't Have Permission to View This Page")
      this._router.navigate(['./adminlogin'])
      return false;
    }

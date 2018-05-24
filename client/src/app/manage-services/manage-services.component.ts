@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {FormGroup,FormControl,Validators,FormBuilder} from '@angular/forms';
+import { UserService } from '../services/user.service';
 import { ServiceDataService } from '../services/service-data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 @Component({
@@ -15,7 +16,7 @@ export class ManageServicesComponent implements OnInit {
   url: '';
   filesToUpload: Array<File> = [];
   constructor(private _router:Router, private _servicedataService:ServiceDataService,
-    private _http:HttpClient) {
+    private _http:HttpClient, private _user:UserService) {
     this._servicedataService.listServices()
     .subscribe(
       data=>this.addServices(data),
@@ -29,10 +30,19 @@ export class ManageServicesComponent implements OnInit {
   addServices(data){
     this.services = data;
     this.serviceCount = this.services.length;
-    console.log(JSON.stringify(data));
   }
   openServiceForm() {
     this.formFlag = true;
+  }
+  adminLogout(){
+    this._user.adminLogout()
+    .subscribe(
+      data=>{
+        localStorage.removeItem('adminUser');
+        this._router.navigate(['/adminlogin'])
+      },
+      error=>console.error(error)
+      )
   }
 
   serviceForm:FormGroup = new FormGroup({
@@ -44,8 +54,7 @@ export class ManageServicesComponent implements OnInit {
     price: new FormGroup ({
       priceHour: new FormControl(null, Validators.required),
       priceDay: new FormControl(null, Validators.required),
-      priceMonth: new FormControl(null, Validators.required),
-
+      priceMonth: new FormControl(null, Validators.required)
     }),
     image: new FormControl(null, Validators.required)
   })
@@ -93,4 +102,5 @@ export class ManageServicesComponent implements OnInit {
         )
     }
   }
+  
 }

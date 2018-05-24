@@ -18,9 +18,19 @@ export class ManageUsersComponent implements OnInit {
       )
   }
   addName(data){
-    this.users = data;
+    this.users = data; 
     this.userCount = this.users.length;
-    console.log(JSON.stringify(data));
+  }
+
+  adminLogout(){
+    this._user.adminLogout()
+    .subscribe(
+      data=>{
+        localStorage.removeItem('adminUser');
+        this._router.navigate(['/adminlogin'])
+      },
+      error=>console.error(error)
+      )
   }
   ngOnInit() {
   }

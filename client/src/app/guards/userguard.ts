@@ -8,42 +8,14 @@ import {CanActivate,ActivatedRouteSnapshot,RouterStateSnapshot } from "@angular/
 export class AuthService implements CanActivate {
  constructor(private userService: UserService,private _router:Router) {}
 
- canActivate( next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-   if (this.userService.isLoggedIn) {
-   	console.log(this.userService.isLoggedIn);
-   	// this._router.navigate(['./adminlogin']);
+ canActivate( next: ActivatedRouteSnapshot,state: RouterStateSnapshot)
+ : Observable<boolean> | Promise<boolean> | boolean {
+   if (localStorage.getItem('currentUser')) {
      return true;
    } else {
-     // window.alert("You don't have permission to view this page");
-     this._router.navigate(['./login']);
+    alert("You Must Log In First")
+     this._router.navigate(['./login'])
      return false;
    }
  }
 }
-
-
-// export class notloggedIn implements CanActivate {
-//   constructor(private _user: UserService,private _router:Router) {};
-
-//   canActivate() {
-// debugger
-//     if (this._user.isLoggedIn) {
-
-//        window.alert("You don't have permission to view this page");
-//       this._router.navigate(['/home'])
-//       return false;
-//     } else {
-//       return true;
-//     }
-//   }
-// }
-
-// import {CanActivate} from "@angular/router";
-
-// class AlwaysAuthGuard implements CanActivate {
-//   canActivate() {
-//     console.log("AlwaysAuthGuard");
-//     return true;
-//   }
-// }

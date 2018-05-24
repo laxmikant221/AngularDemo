@@ -13,26 +13,30 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./userhome.component.css']
 })
 export class UserhomeComponent implements OnInit {
-  users: any;
   username:String='';
   email: String='';
-  serviceList: any;
+  userId: string='';
   bookingDetails: any;
-  // url: '';
-  // servicesCount: String='';
   serviceId: String = localStorage.getItem('BookingServiceId');
+  serviceName: string='';
   descriptionData : any;
   bookedServiceDescription: any;
   isBooking:boolean=false;
   isProceed:boolean=false;
-  isHistory:boolean=false;
-  i:number=0;
-  bookArray:any[]=[];
   ServceDescriptionData:any;
-  completed_requests:number=0;
+  searchword:string='';
+  services: any;
+  serviceCount: String='';
+  showResults:boolean=false;
+  isResultFound:boolean=false;
+
+  searchForm:FormGroup = new FormGroup({
+    search:new FormControl(null,Validators.minLength(5)) 
+  })
 
   serviceBookingForm:FormGroup = new FormGroup({
     serviceId: new FormControl(null),
+    serviceName: new FormControl(null),
     customerName:new FormControl(null,Validators.required),
     mobileNumber: new FormControl(null, Validators.required),
     address: new FormControl(null, Validators.required),
@@ -45,7 +49,11 @@ export class UserhomeComponent implements OnInit {
     private _http:HttpClient, private _servicedataService:ServiceDataService) { 
     this._user.user()
     .subscribe(
-     data=>this.addName(data),
+     data=>{
+      this.username = data.username;
+      this.email = data.email;
+      this.userId = data._id;
+     },
      error=>this._router.navigate(['/login']));
 
     if(this.serviceId) {
@@ -63,7 +71,6 @@ export class UserhomeComponent implements OnInit {
   }
 
   serviceDescription(id) {
-    console.log(id);
     this._servicedataService.getServiceDescription(id)
     .subscribe(
       data=>{
@@ -76,16 +83,46 @@ export class UserhomeComponent implements OnInit {
     )
   }
 
-  addName(data){
-    this.username = data.username;
-    this.email = data.email;
-  }
-  // addServiceList(data) {
-  //   this.serviceList = data;
-  //   this.servicesCount = this.serviceList.length;
-  // }
-
   ngOnInit() {
+  }
+
+  onSearchClick(searchKeyword) {
+    this.searchword=searchKeyword;
+    if(!this.searchForm.valid){
+      console.log('Invalid Form'); return;
+    }
+    this._servicedataService.SearchByName(this.searchword)
+    .subscribe(
+        data=>{this.addServices(data)
+          console.log(data)},
+        error=>this._router.navigate(['/home'])
+      )
+  }
+
+  addServices(data){
+    this.services = data;
+    this.serviceCount = this.services.length;
+    if(this.services.length>0) {
+      this.showResults = true;
+      this.isResultFound=false;
+    } else {
+      this.isResultFound = true;
+    }
+  }
+
+  bookingLogin(id) {
+    
+    if(localStorage.getItem('currentUser')) {
+      this.showResults= false;
+      localStorage.setItem('BookingServiceId', id);
+       window.location.reload();
+    }
+    else {
+      this.showResults = false;
+      alert("You Must Log In first!!!!")
+      localStorage.setItem('BookingServiceId', id);
+      this._router.navigate(['login'])
+    }
   }
 
   logout(){
@@ -94,57 +131,18 @@ export class UserhomeComponent implements OnInit {
       data=>{
         localStorage.removeItem('currentUser');
         localStorage.removeItem('BookingServiceId');
-        this._user.isLoggedIn = false;
-        this._user.isAnyLoggedIn = false;
         this._router.navigate(['/login'])
       },
       error=>console.error(error)
       )
   }
-
-  viewHistory(email) {
-    var i:number;
-    this._user.userBookings(this.email)
-    .subscribe(
-      data=> {
-        this.bookingDetails = data;
-        this.isHistory = true;
-        console.log(this.bookingDetails);
-        for (i=0;i<this.bookingDetails.length;i++) {
-          this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
-
-            this.bookArray.push(data);
-            // completed_requests++;
-            // if (completed_requests == this.bookingDetails.length) {
-            // All download done, process responses array
-            console.log(bookArray);
-          // }
-        
-        } 
-      },
-      error=>this._router.navigate(['/user']))
-    // for(this.i=0;this.i<this.bookingDetails.length;this.i++) {
-    //   this._servicedataService.getServiceDescription(this.bookingDetails.serviceId)
-    //   .subscribe(
-    //     data=>{
-    //       this.isHistory = true;
-    //       this.bookedServiceDescription = data;
-    //       this.bookArray.push(this.bookedServiceDescription);
-    //     },
-    //     error=>{
-    //       console.log("Ooops there was some error")
-    //     }
-    //   )
-    // }
-
-  }
-
-  proceed(id) {
+  proceed(id,serviceName) {
     this.isProceed = true;
     this.isBooking = false;
-
+    this.serviceName = serviceName;
   }
-  cancelBooking() {
+
+  cancel() {
     if(confirm("Are you sure you want to Cancel this Booking")) { 
       localStorage.removeItem('BookingServiceId');
       this.isBooking = false;
@@ -154,6 +152,7 @@ export class UserhomeComponent implements OnInit {
   confirmBooking() {
     this.serviceBookingForm.value.email = this.email;
     this.serviceBookingForm.value.serviceId = this.serviceId;
+    this.serviceBookingForm.value.serviceName = this.serviceName;
     console.log(this.serviceBookingForm.value);
     if(!this.serviceBookingForm.valid){
       console.log('Invalid Form'); return;
@@ -161,9 +160,10 @@ export class UserhomeComponent implements OnInit {
     this._user.bookServices(JSON.stringify(this.serviceBookingForm.value))
     .subscribe(
       data=> {
-        alert("Booking Successfull!!!!!!!!");
+        alert("Congratulations.. Booking Successfull!!!!!!!!!!");
         this.isBooking = false;
         this.isProceed = false; 
+        localStorage.removeItem('BookingServiceId');
         this._router.navigate(['/user']);
       },
       error=>console.error(error)
@@ -172,5 +172,11 @@ export class UserhomeComponent implements OnInit {
   goBack() {
     this.isProceed = false;
     this.isBooking = true;
+  }
+  cancelBooking(id) {
+    this._user.cancelBooking(id)
+    .subscribe(
+      data=> alert("Booking Canceled"),
+      error=> alert("Sorry, there was some eroor"))
   }
 }

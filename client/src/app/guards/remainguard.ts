@@ -8,29 +8,20 @@ import 'rxjs/add/operator/toPromise';
 export class RemainGuard implements CanActivate {
 
  constructor(private _user: UserService, private _router:Router) {
-  console.log(this._user.isLoggedIn);
 }
 
 
-canActivate ( 
-  next: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot 
-  ): Observable<boolean> | Promise<boolean> | boolean {
- // if (!this._user.isLoggedIn) {
- //    this._router.navigate(['./login']);
-    return true;
-    
-  // } 
-     // window.alert("You don't have permission to view this page");
-     // debugger
-     // console.log(this._user.isLoggedIn);
-     // this._router.navigate(['./user']);
-     // return false;
-
-   // {
-   //   // window.alert("You don't have permission to view this page");
-   //   // this._router.navigate(['./adminlogin'])
-   //   return true;
-   // }
+canActivate ( next: ActivatedRouteSnapshot,state: RouterStateSnapshot )
+: Observable<boolean> | Promise<boolean> | boolean {
+  if (!(localStorage.getItem('adminUser') || localStorage.getItem('currentUser'))) {
+     return true;
+   } else {
+    alert("You Must Log Out First")
+    if(localStorage.getItem('adminUser'))
+    this._router.navigate(['./admin']) 
+  else this._router.navigate(['./user'])
+    return false;
+   }
+ 
  }
 }

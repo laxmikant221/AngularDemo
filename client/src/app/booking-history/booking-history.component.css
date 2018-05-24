@@ -26,15 +26,3 @@
 .table {
 	background-color: lightgrey;
 }
-.searchCard {
-	width: 250px;
-	height: 350px;
-	float: left;
-	margin-left: 10px;
-	margin-top: 10px;
-	/*display: inline-grid;*/
-}
-#serviceDetail {
-	width: 300px;
-	height: 300px;
-}

@@ -182,7 +182,6 @@ router.put("/updateServiceById", function (req, res) {
     if(err) res.status(501).json(err)
       res.send(req.body);
   })
-
 })
 //delete services by Id
 router.delete("/deleteServiceById", function (req, res) {
@@ -209,6 +208,7 @@ router.post('/bookServices',function(req,res,next){
     pinCode: req.body.pinCode,
     timeSlot: req.body.timeSlot,
     serviceId: req.body.serviceId,
+    serviceName: req.body.serviceName,
     creation_dt: Date.now()
     
   });
@@ -225,14 +225,6 @@ router.post('/bookServices',function(req,res,next){
 router.get('/userBookings',function(req,res,next){ 
   BookServices.find({"email": req.query.email},function(err, bookedServices) { 
     if (err) return next(err);
-    
-// //     else { 
-// //     Service.find({"_id": bookedServices.serviceId},function(err,bookingDetails){
-// //       if(err) return next(err);
-// //       return res.json(bookingDetails);
-// //     })
-    
-// // }
     return res.json(bookedServices);
   });
 
@@ -265,5 +257,29 @@ router.get('/serviceBooked', function(req,res,next){
     if(err) return next(err)
       return res.json(result)
   })
+})
+//cancel booking
+router.delete("/cancelBooking", function (req, res) {
+  BookServices.findByIdAndRemove(req.query.id,function(err,req){
+    if(err) res.status(501).json(err)
+      res.send(req.body);
+  })
+
+})
+
+router.get('/getBookingInfoById',function(req,res,next){
+  BookServices.find({"_id":req.query.id},function(err, service){
+    if(err) return next(err);
+    return res.json(service);
+  })
+})
+
+router.put("/updateBookingById", function (req, res) {
+  id = req.query.id;
+  BookServices.findByIdAndUpdate(req.query.id, req.body,function(err,req){
+    if(err) res.status(501).json(err)
+      res.send(req.body);
+  })
+
 })
 module.exports = router;

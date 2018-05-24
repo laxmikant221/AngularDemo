@@ -4,9 +4,6 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-  public isLoggedIn: boolean = false;
-  public isAdminLoggedIn: boolean = false;
-  public isAnyLoggedIn: boolean = false;
   constructor(private _http:HttpClient) { }
 
   register(body:any){
@@ -94,10 +91,11 @@ export class UserService {
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     })
   }
-  // UploadFile(body:any) {
-  //   return this._http.post('http://127.0.0.1:3000/api/uploadimage',body,{
-  //     observe:'body',
-  //     headers:new HttpHeaders().append('Content-Type','application/json')
-  //   });
-  // }
+  cancelBooking(id) {
+    return this._http.delete('http://127.0.0.1:3000/api/cancelBooking',{
+      params: {id: id},
+      observe:'body',
+      headers:new HttpHeaders().append('Content-Type','application/json')
+    });
+  }
 }

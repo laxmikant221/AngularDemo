@@ -16,8 +16,6 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private _router:Router, private _user:UserService) {
-    // this._user.isLoggedIn = false;
-    // this._user.isAnyLoggedIn = false;
   }
 
   ngOnInit() {
@@ -35,10 +33,6 @@ export class LoginComponent implements OnInit {
     .subscribe(
       data=>{
         localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
-        console.log(this._user.isAnyLoggedIn);
-        this._user.isLoggedIn = true;
-        this._user.isAnyLoggedIn = true;
-        console.log(this._user.isAnyLoggedIn);
         this._router.navigate(['/user']);
       } ,
       error=>console.error(error)

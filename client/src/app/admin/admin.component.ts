@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { ServiceDataService } from '../services/service-data.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,13 +10,13 @@ import { Router } from '@angular/router';
 })
 export class AdminComponent implements OnInit {
 
-  // constructor() { }
   users: any;
   username:String='';
   email: String='';
   bookedServices: any;
-  constructor(private _user:UserService, private _router:Router) { 
-    this._user.isAdminLoggedIn = true;
+  ServceDescriptionData:any;
+  constructor(private _user:UserService, private _router:Router, 
+    private _servicedataService:ServiceDataService) { 
     this._user.admin()
     .subscribe(
       data=>this.addName(data),
@@ -40,13 +41,25 @@ export class AdminComponent implements OnInit {
     this._user.adminLogout()
     .subscribe(
       data=>{
-        console.log(data);
-        this._user.isAdminLoggedIn = false;
-        this._user.isAnyLoggedIn = false;
+        localStorage.removeItem('adminUser');
         this._router.navigate(['/adminlogin'])
       },
       error=>console.error(error)
       )
+  }
+
+  serviceDescription(id) {
+    console.log(id);
+    this._servicedataService.getServiceDescription(id)
+    .subscribe(
+      data=>{
+        this.ServceDescriptionData = data
+        console.log(this.ServceDescriptionData)
+      },
+      error=>{
+        console.log("Ooops there was some error")
+      }
+    )
   }
 
 }

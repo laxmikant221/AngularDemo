@@ -22,7 +22,8 @@ import { FilterPipe} from './filters/filter.pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTableModule, MatSortModule, MatInputModule,
   MatPaginatorModule, MatProgressSpinnerModule,} from '@angular/material';
-  import { EditServicesComponent } from './edit-services/edit-services.component';
+import { EditServicesComponent } from './edit-services/edit-services.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
   @NgModule({
     declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import {MatTableModule, MatSortModule, MatInputModule,
     ManageServicesComponent,
     HomeComponent,
     FilterPipe,
-    EditServicesComponent
+    EditServicesComponent,
+    BookingHistoryComponent
     ],
     imports: [
     BrowserModule,

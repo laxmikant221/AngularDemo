@@ -22,6 +22,9 @@
     <li class="nav-item">
       <a class="nav-link" (click)="openServiceForm()">Add Services</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="adminLogout()">Log out</a>
+    </li>
   </ul>
 </div>
 </nav>
@@ -85,7 +88,7 @@
         <input formControlName="image" id="image" name="image" type="file" 
         (change)="fileChangeEvent($event)" placeholder="Upload a file..." multiple/>
       </div>
-      <img [src]="url" height="100"> <br/>
+      <img [src]="url" height="100" alt="preview"> <br/>
       <button type="button" class="btn btn-success" (click)="saveServices()">
         Submit
       </button>
@@ -128,7 +131,7 @@
             width="50"></td>
           <td>
             <a [routerLink]="['/edit-services',service._id]">Edit</a>
-            <a class="nav-link"(click)="deleteServiceById(service._id)">/Delete</a>
+            <a class="nav-link" (click)="deleteServiceById(service._id)">/Delete</a>
           </td>
         </tr>
       </tbody>

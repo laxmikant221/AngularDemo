@@ -12,20 +12,22 @@ import { AdminGuard } from './guards/adminguard';
 import { RemainGuard } from './guards/remainguard';
 import { HomeComponent } from './home/home.component';
 import { EditServicesComponent } from './edit-services/edit-services.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'home', pathMatch:'full'},
   {path:'login', component:LoginComponent, canActivate:[RemainGuard]},
-  {path:'register', component:RegisterComponent},
-  {path:'user',component:UserhomeComponent},
-  {path: 'admin', component: AdminComponent},
-  {path: 'adminlogin', component: AdminloginComponent},
+  {path:'register', component:RegisterComponent, canActivate:[RemainGuard]},
+  {path:'user',component:UserhomeComponent, canActivate:[AuthService]},
+  {path: 'admin', component: AdminComponent, canActivate:[AdminGuard]},
+  {path: 'adminlogin', component: AdminloginComponent, canActivate:[RemainGuard]},
   {path: 'manage-users', component: ManageUsersComponent,canActivate:[AdminGuard]
 },
   {path: 'manage-services', component: ManageServicesComponent,canActivate:[AdminGuard]
  },
-  {path: 'home', component: HomeComponent},
-  {path: 'edit-services/:id', component: EditServicesComponent}
+  {path: 'home', component: HomeComponent, canActivate: [RemainGuard]},
+  {path: 'edit-services/:id', component: EditServicesComponent},
+  {path: 'booking-history/:username', component: BookingHistoryComponent}
 ];
 
 @NgModule({

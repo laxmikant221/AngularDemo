@@ -16,8 +16,6 @@ export class AdminloginComponent implements OnInit {
   });
 
   constructor(private _router:Router, private _user:UserService) {
-    this._user.isAdminLoggedIn = false;
-    this._user.isAnyLoggedIn = false;
   }
   ngOnInit() {
   }
@@ -33,9 +31,7 @@ export class AdminloginComponent implements OnInit {
     this._user.adminLogin(JSON.stringify(this.loginForm.value))
     .subscribe(
       data=>{
-        console.log(this._user.isAdminLoggedIn);
-        this._user.isAdminLoggedIn = true;
-        this._user.isAnyLoggedIn = true;
+        localStorage.setItem('adminUser', JSON.stringify(this.loginForm.value));
         this._router.navigate(['/admin']);
       } ,
       error=>console.error(error)
