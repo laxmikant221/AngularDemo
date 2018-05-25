@@ -69,14 +69,16 @@ export class ManageServicesComponent implements OnInit {
     console.log('form data variable :   '+ formData.toString());
     this._http.post('http://127.0.0.1:3000/api/saveServices', formData)
     .subscribe(files =>{  
-      alert("New service Added Successfully")
-      if(!confirm("Do you want to add more services????")) {
+      swal("New service Added Successfully", {
+            icon: "success",
+          })
+      // if(!confirm("Do you want to add more services????")) {
         this.formFlag = false
-      }
+      // }
       
     },
     error=>{  
-      alert("there was some error")});
+      swal("there was some error")});
   }
 
   fileChangeEvent(fileInput: any) {
@@ -91,16 +93,27 @@ export class ManageServicesComponent implements OnInit {
   }
 
   deleteServiceById(id) {
-    if(confirm("Are you sure you want to delete")) { 
-      this._servicedataService.deleteServiceById(id)
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover it again!!!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        this._servicedataService.deleteServiceById(id)
         .subscribe(
-          data=>{
-            alert("Service deleted Successfully....")
-            this._router.navigate(['/manage-services'])
-          },
-          error=>alert("Ooops.. there was some error")
-        )
+          data=> {swal("Poof! Service deleted Successfully!!!", {
+            icon: "success",
+          });},
+          error=> swal("Sorry, there was some eroor"))
+      } 
+     else {
+      swal("Service is not deleted!");
     }
+
+    });
   }
   
 }

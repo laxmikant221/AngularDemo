@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark ">
   <h1 class="navbar-brand">Hello Admin</h1>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
   aria-label="Toggle navigation">
@@ -43,86 +43,66 @@
   	</table>
   </div>
 </div>
-<div class="container col-sm-8">
+<div class="container col-sm-9">
   <h5 class="text-center">Services Booked</h5>
-  <div class="container" >
-    <div class="container" *ngFor="let booking of bookedServices">
-      <div class="container">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td>
-                <p data-toggle="tooltip" data-placement="left" title="Click to View Service Description!">
-                  <b>Service Name:</b>
-                  <a href="" (click)="serviceDescription(booking.serviceId)" data-toggle="modal" data-target="#myModal">
-                    {{booking.serviceName | titlecase}}
-                  </a>
-                </p>
-              </td>
-              <td>
-                <p><b>Customer Name:</b> {{booking.customerName | titlecase}}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p><b>Mobile Number:</b> {{booking.mobileNumber}}</p>
-              </td>
-              <td>
-                <p><b>Customer's Address:</b> {{booking.address | titlecase}}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p><b>Pin Code:</b> {{booking.pinCode}}</p>
-              </td>
-              <td>
-                <p><b>Time Slot:</b> {{booking.timeSlot}}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p><b>Booking Date:</b> {{booking.creation_dt}}</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p><b><hr></b></p>
-    </div>
-  </div>
-</div>
-<div class="container modal fade" id="myModal">
-  <div class="modal-dialog modal-m">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h4 class="modal-title">Service Details</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="container" *ngFor="let service of ServceDescriptionData">
-          <div class="card" id="serviceDetail">
-            <img class="card-img-top text-center" src="../assets/images/{{ service.imageUrl }}" alt="Search image">
-            <div class="card-body">
-              <h4 class="card-title"> {{ service.serviceCategory | titlecase }}</h4>
-              <p class="card-text">Price per Hour: {{ service.price.priceHour | titlecase}}</p>
-              <p class="card-text">Price per Day: {{ service.price.priceDay | titlecase}}</p>
-              <p class="card-text">Price per Month: {{ service.price.priceMonth | titlecase}}</p>
-            </div>
-          </div>
-          <p><b>Service Name:</b> {{service.serviceName | titlecase}}</p>
-          <p><b>Description:</b> {{service.description}}</p>
-          <p><b>Address:</b> {{service.address | titlecase}}, {{service.zipCode}}
+  <div class="container">
+    <div *ngFor="let booking of bookedServices; let i = index " >
+      <div class="row" id="BookedServices">
+        <div class="col-sm-6" id="customerInfo">
+          <table class="table table-sm borderless">
+            <tbody>
+              <tr>
+                <td>
+                  <p><b>Service Name:</b>{{booking.serviceName | titlecase}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Customer Name:</b> {{booking.customerName | titlecase}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Mobile Number:</b> {{booking.mobileNumber}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Customer's Address:</b> {{booking.address | titlecase}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Pin Code:</b> {{booking.pinCode}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Time Slot:</b> {{booking.timeSlot}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><b>Booking Date:</b> {{booking.creation_dt}}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-6" id="serviceInfo">
+          <img src="../assets/images/{{booking.bookings[0].imageUrl}}" alt="Search image">
+          <h5> {{booking.bookings[0].serviceCategory}}</h5>
+          <p><b>Price per Hour:</b> {{booking.bookings[0].price.priceHour}}</p>
+          <p><b>Price per Day:</b> {{booking.bookings[0].price.priceDay}}</p>
+          <p><b>Price per Month:</b> {{booking.bookings[0].price.priceMonth}}</p>
+          <p><b>Description:</b> {{booking.bookings[0].description}}</p>
+          <p>
+            <b>Address:</b> 
+            {{booking.bookings[0].address}}, {{booking.bookings[0].zipCode}}
           </p>
         </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">
-            Close
-          </button>
-        </div>
       </div>
     </div>
   </div>
 </div>
+

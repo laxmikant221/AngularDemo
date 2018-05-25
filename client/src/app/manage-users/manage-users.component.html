@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark">
 <h1 class="navbar-brand">Hello Admin</h1>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
 aria-label="Toggle navigation">
@@ -27,20 +27,20 @@ aria-label="Toggle navigation">
 </nav>
 <router-outlet></router-outlet>
 
-<div class="container">
-<h3 class="text-center">Total Number of Registered Users: ({{userCount}})</h3>
-<table class="table table-striped">
+<div class="container col-sm-6 table-responsive">
+<h4 class="text-center">Total Number of Registered Users: ({{userCount}})</h4>
+<table class="table table-striped table-hover text-justify">
   <thead>
     <tr>
-      <th>Sr. NO.</th>
-      <th>username</th>
-      <th>email</th>
+      <th>Sr. No.</th>
+      <th>Username</th>
+      <th>E-mail</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let user of users; let i = index ">
       <td>{{ i+1 }}</td>
-      <td>{{ user.username }}</td>
+      <td>{{ user.username | titlecase }}</td>
       <td>{{ user.email}}</td>
     </tr>
   </tbody>

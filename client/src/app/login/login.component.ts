@@ -27,15 +27,16 @@ export class LoginComponent implements OnInit {
 
   login(){
     if(!this.loginForm.valid){
-      console.log('Invalid');return;
+      swal("Ivalid Inut", {icon: "warning"});return;
     }
     this._user.login(JSON.stringify(this.loginForm.value))
     .subscribe(
       data=>{
         localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+        swal("Congrats!! You have successfully logged in...", {icon: "success"})
         this._router.navigate(['/user']);
       } ,
-      error=>console.error(error)
+      error=>swal("User name or password do not match!!!", {icon: "warning"} )
       )
   }
 

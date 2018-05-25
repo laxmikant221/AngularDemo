@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark">
   <h1 class="navbar-brand">Hello {{username}}!</h1>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
   aria-label="Toggle navigation">
@@ -21,10 +21,6 @@
       [(ngModel)]="searchKeyword">
       <button class="btn btn-success btn-sm" type="submit">Search</button>
     </form>
-    
-    <!-- <li class="nav-item ">
-      <a class="nav-link" (click)="viewHistory()"> History </a>
-    </li> -->
     <li class="nav-item">
       <a class="nav-link" (click)="logout()">Log out</a>
     </li>
@@ -52,7 +48,7 @@
         <p class="card-text">Price per Hour: {{ service.price.priceHour | titlecase}}</p>
         <p class="card-text">Price per Day: {{ service.price.priceDay | titlecase}}</p>
         <p class="card-text">Price per Month: {{ service.price.priceMonth | titlecase}}</p>
-        <button (click)="serviceDescription(service._id)" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View Detail</button>
+        <button (click)="serviceDescription(service._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">View Detail</button>
       </div>
     </div>
   </div>
@@ -88,9 +84,9 @@
 
         <!-- Modal footer -->
         <div class="modal-footer" *ngFor="let service of ServceDescriptionData">
-          <a class="btn btn-success mr-auto" 
+          <a class="btn btn-success mr-auto btn-sm" 
           data-dismiss="modal" (click)="bookingLogin(service._id)">Book Now</a>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">
             Close
           </button>
         </div>
@@ -118,9 +114,9 @@
     <p><b>Address:</b> {{service.address | titlecase}}, {{service.zipCode}}
     </p>
     <button (click)=(proceed(service._id,service.serviceName)) 
-    class="btn btn-primary">Poceed
+    class="btn btn-primary btn-sm">Poceed
     </button>
-    <button class="btn btn-warning" (click)=(cancel())>Cancel Booking</button>
+    <button class="btn btn-warning btn-sm" (click)=(cancel())>Cancel Booking</button>
   </div>
 </div>
 <div class="container col-sm-5" *ngIf=(isProceed)>
@@ -147,7 +143,8 @@
       <input type="radio" formControlName="timeSlot" name="timeSlot" value="Morning">Morning
       <input type="radio" formControlName="timeSlot" name="timeSlot" value="Evening">Evening
     </div>
-    <button type="button" class="btn btn-success mr-auto" (click)="confirmBooking()">Confirm Booking</button>
-    <button type="button" class="btn btn-primary" (click)="goBack()">Go Back</button>
+    <button type="button" class="btn btn-success btn-sm mr-auto" 
+    (click)="confirmBooking()">Confirm Booking</button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">Go Back</button>
   </form>
 </div>

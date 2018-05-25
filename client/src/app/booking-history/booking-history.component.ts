@@ -43,6 +43,9 @@ bookingInfo:any;
      error=>this._router.navigate(['/user']));
 
   }
+  addData(data) {
+    
+  }
 
   ngOnInit() {
 
@@ -57,18 +60,32 @@ bookingInfo:any;
         console.log(this.ServceDescriptionData)
       },
       error=>{
-        console.log("Ooops there was some error")
+        swal("Ooops there was some error")
       }
     )
   }
 
   cancelBooking(id) {
-    if(confirm("Are you sure you want to Cancel this Booking")) {
-      this._user.cancelBooking(id)
-    .subscribe(
-      data=> alert("Booking Canceled"),
-      error=> alert("Sorry, there was some eroor"))
-    } 
+    swal({
+      title: "Are you sure?",
+      text: "Once canceled, you will have to book it again!!!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        this._user.cancelBooking(id)
+        .subscribe(
+          data=> {
+            swal("Poof! Your Booking Has Been Canceled!!!", {
+            icon: "success",});
+            window.location.reload();
+        },
+          error=> swal("Sorry, there was some eroor"))
+      } 
+     
+    });
   }
 
   getBookingInfo(id) {
@@ -78,7 +95,7 @@ bookingInfo:any;
         this.bookingInfo= data
         console.log(this.bookingInfo)},
         error=>{
-          alert("Oooops Something Went Wrong.....")
+          swal("Oooops Something Went Wrong.....")
           this._router.navigate(['/manage-services'])}
           )
   }
@@ -86,10 +103,10 @@ bookingInfo:any;
   updateBooking(id) {
     this._servicedataService.updateBookingById(this.updateBookingForm.value,id)
     .subscribe(data =>{  
-      alert("Booking Updated Successfully");
+      swal("Booking Updated Successfully");
     },
     error=>{  
-      alert("there was some error")});
+      swal("there was some error")});
   }
 
   logout(){

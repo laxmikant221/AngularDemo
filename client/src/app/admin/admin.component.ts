@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-
   users: any;
   username:String='';
   email: String='';
   bookedServices: any;
   ServceDescriptionData:any;
   constructor(private _user:UserService, private _router:Router, 
-    private _servicedataService:ServiceDataService) { 
+    private _servicedataService:ServiceDataService) 
+  { 
     this._user.admin()
     .subscribe(
       data=>this.addName(data),
@@ -24,15 +24,17 @@ export class AdminComponent implements OnInit {
       )
     this._user.serviceBooked()
     .subscribe(
-      data=>this.bookedServices=data,
-      error=>alert("oops there was some error")
+      data=>{
+        this.bookedServices=data
+        console.log(data[0].bookings)
+      },
+      error=>swal("oops there was some error")
       )
   }
 
   addName(data){
     this.username = data.username;
     this.email = data.email;
-    console.log(data);
   }
   ngOnInit() {
   }

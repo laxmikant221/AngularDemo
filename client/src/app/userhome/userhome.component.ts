@@ -31,7 +31,7 @@ export class UserhomeComponent implements OnInit {
   isResultFound:boolean=false;
 
   searchForm:FormGroup = new FormGroup({
-    search:new FormControl(null,Validators.minLength(5)) 
+    search:new FormControl(null,Validators.minLength(4)) 
   })
 
   serviceBookingForm:FormGroup = new FormGroup({
@@ -64,7 +64,7 @@ export class UserhomeComponent implements OnInit {
             this.isBooking = true;
           },
           error=>{
-            console.log("Ooops there was some error")
+            swal("Ooops there was some error")
           }
         )
       }
@@ -75,10 +75,9 @@ export class UserhomeComponent implements OnInit {
     .subscribe(
       data=>{
         this.ServceDescriptionData = data
-        console.log(this.ServceDescriptionData)
       },
       error=>{
-        console.log("Ooops there was some error")
+        swal("Ooops there was some error")
       }
     )
   }
@@ -119,7 +118,7 @@ export class UserhomeComponent implements OnInit {
     }
     else {
       this.showResults = false;
-      alert("You Must Log In first!!!!")
+      swal("You Must Log In first!!!!")
       localStorage.setItem('BookingServiceId', id);
       this._router.navigate(['login'])
     }
@@ -133,7 +132,7 @@ export class UserhomeComponent implements OnInit {
         localStorage.removeItem('BookingServiceId');
         this._router.navigate(['/login'])
       },
-      error=>console.error(error)
+      error=>swal(error)
       )
   }
   proceed(id,serviceName) {
@@ -155,28 +154,23 @@ export class UserhomeComponent implements OnInit {
     this.serviceBookingForm.value.serviceName = this.serviceName;
     console.log(this.serviceBookingForm.value);
     if(!this.serviceBookingForm.valid){
-      console.log('Invalid Form'); return;
+      swal('Invalid Form'); return;
     }
     this._user.bookServices(JSON.stringify(this.serviceBookingForm.value))
     .subscribe(
       data=> {
-        alert("Congratulations.. Booking Successfull!!!!!!!!!!");
+        swal("Congratulations.. Booking Successfull!!!!!!!!!!");
         this.isBooking = false;
         this.isProceed = false; 
         localStorage.removeItem('BookingServiceId');
         this._router.navigate(['/user']);
       },
-      error=>console.error(error)
+      error=>swal(error)
     )
   }
   goBack() {
     this.isProceed = false;
     this.isBooking = true;
   }
-  cancelBooking(id) {
-    this._user.cancelBooking(id)
-    .subscribe(
-      data=> alert("Booking Canceled"),
-      error=> alert("Sorry, there was some eroor"))
-  }
+  
 }

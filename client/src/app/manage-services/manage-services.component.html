@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark">
   <h1 class="navbar-brand">Hello Admin</h1>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
   aria-label="Toggle navigation">
@@ -32,7 +32,7 @@
 
 
 <div class="container-fluid">
-  <div class="container" *ngIf="formFlag">
+  <div class="container col-sm-6" *ngIf="formFlag">
     <h3 class="text-center">New Services</h3>
     <form [formGroup]="serviceForm">
       <div class="form-group">
@@ -59,10 +59,10 @@
         </textarea>
       </div>
       <fieldset formGroupName="price">
-        <div class="form-group form-inline">
+        <div class="form-group ">
           <label for="priceHour">Price Per Hour:</label>
           <input type="text" formControlName="priceHour" id="priceHour" 
-          class="form-control">
+          class="form-control"><br>
 
           <label for="priceDay">Price Per Day:</label>
           <input type="text" formControlName="priceDay" id="priceDay" 
@@ -97,9 +97,9 @@
       </button>
     </form>
   </div>
-  <div class="container-fluid" id="serviceList" *ngIf="!formFlag">
-    <h3 class="text-center">Total Number of Available Services: ({{serviceCount}})
-    </h3>
+  <div class="container-fluid " id="serviceList" *ngIf="!formFlag">
+    <h4 class="text-center">Total Number of Available Services: ({{serviceCount}})
+    </h4>
     <table class="table table-striped">
       <thead>
         <tr>

@@ -1,3 +1,9 @@
+* {
+  border: none;
+}
+/*.navbar {
+  background-color: #004080;
+}*/
 .row {
   margin-top:40px; 
   background-color:#eff0f2;
@@ -15,14 +21,29 @@
 }
 
 #serviceDetail {
-  width: 300px;
+  width: 250px;
   height: 300px;
+  background-color: #004080;
+  color: white;
+  margin-bottom: 5px;
 }
 
-#serviceDetail > img {
+#serviceInfo > img, #serviceDetail > img {
   width: 100px;
   height: 100px;
 }
-.table {
-  background-color: lightgrey;
+#BookedServices {
+  background-color: #003366;
+  color: white;
 }
+.table {
+  border: none;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+/*#customerInfo, #serviceInfo {
+  float: left;
+  display: inline;
+}*/

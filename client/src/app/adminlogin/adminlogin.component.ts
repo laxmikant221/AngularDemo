@@ -26,12 +26,14 @@ export class AdminloginComponent implements OnInit {
 
   adminLogin(){
     if(!this.loginForm.valid){
-      console.log('Invalid');return;
+      swal("Invalid Input!! Please the check the entered values", {icon: "warning"});
+      return;
     }
     this._user.adminLogin(JSON.stringify(this.loginForm.value))
     .subscribe(
       data=>{
         localStorage.setItem('adminUser', JSON.stringify(this.loginForm.value));
+        swal("Congrats!! You have successfully logged in..", {icon: "success"});
         this._router.navigate(['/admin']);
       } ,
       error=>console.error(error)

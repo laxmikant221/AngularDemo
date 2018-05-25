@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   descriptionData: any;
 
   searchForm:FormGroup = new FormGroup({
-    search:new FormControl(null,Validators.minLength(5)) 
+    search:new FormControl(null,Validators.minLength(4)) 
   })
 
   constructor(private _router:Router, private _user: UserService,
@@ -55,6 +55,11 @@ export class HomeComponent implements OnInit {
       )
   }
 
+  clearMsg() {
+    this.isResultFound = false;
+    this.showResults = false;
+  }
+
   serviceDescription(id) {
     this._servicedataService.getServiceDescription(id)
     .subscribe(
@@ -74,7 +79,7 @@ export class HomeComponent implements OnInit {
       this._router.navigate(['/user'])
     }
     else {
-      alert("You Must Log In first!!!!")
+      swal("You Must Log In first!!!!")
       localStorage.setItem('BookingServiceId', id);
       this._router.navigate(['login'])
     }

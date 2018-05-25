@@ -1,6 +1,3 @@
-/*.table {
-	height: max-content;
-  width: max-content;
-  height: -moz-fit-content;
-  width: -moz-fit-content;
-}*/
+.table-responsive {
+	margin-top: 50px;
+}

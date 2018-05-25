@@ -14,14 +14,14 @@ export class RemainGuard implements CanActivate {
 canActivate ( next: ActivatedRouteSnapshot,state: RouterStateSnapshot )
 : Observable<boolean> | Promise<boolean> | boolean {
   if (!(localStorage.getItem('adminUser') || localStorage.getItem('currentUser'))) {
-     return true;
-   } else {
-    alert("You Must Log Out First")
+    return true;
+  } else {
+    swal("You Must Log Out First")
     if(localStorage.getItem('adminUser'))
-    this._router.navigate(['./admin']) 
-  else this._router.navigate(['./user'])
-    return false;
-   }
- 
- }
+      this._router.navigate(['./admin']) 
+    else this._router.navigate(['./user'])
+      return false;
+  }
+  
+}
 }

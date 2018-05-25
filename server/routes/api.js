@@ -227,37 +227,25 @@ router.get('/userBookings',function(req,res,next){
     if (err) return next(err);
     return res.json(bookedServices);
   });
+});
 
-  // const book = BookServices.aggregate([
-  //   {
-  //     $lookup:
-  //     {
-  //       from: 'Service',
-  //       localField: 'serviceId',
-  //       foreignField: '_id',
-  //       as: 'bookingData'
-  //     }}])
-  // console.log(book);
-  // return res.json(book);
-    // }]).toArray(function(err, res){
-    //   if(err) throw err;
-    //   console.log(JSON.stringify(res));
-    // })
-    // // return res.json(err);
-    // Service.find({}).populate('BookServices')
-    // .exec(function(err,res) {
-    //   if(err) console.log(err)
-    //     return res;
-    // })
-  });
-
-// });
 router.get('/serviceBooked', function(req,res,next){
-  BookServices.find({},function(err,result){
-    if(err) return next(err)
-      return res.json(result)
-  })
+  BookServices.aggregate([
+  {
+    $lookup:{
+      from:"services",
+      localField:"serviceId",
+      foreignField:"_id",
+      as:"bookings"}
+    }
+    ]).exec().then(function(data) {
+      console.log(data[0].bookings)
+      return res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
 })
+
 //cancel booking
 router.delete("/cancelBooking", function (req, res) {
   BookServices.findByIdAndRemove(req.query.id,function(err,req){

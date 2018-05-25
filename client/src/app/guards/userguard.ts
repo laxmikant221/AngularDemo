@@ -13,9 +13,9 @@ export class AuthService implements CanActivate {
    if (localStorage.getItem('currentUser')) {
      return true;
    } else {
-    alert("You Must Log In First")
-     this._router.navigate(['./login'])
-     return false;
-   }
- }
+    swal("You Must Log In First")
+    this._router.navigate(['./login'])
+    return false;
+  }
+}
 }

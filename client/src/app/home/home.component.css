@@ -1,10 +1,30 @@
+#searchBox {
+  margin-top: 150px;
+}
+/*#searchBox > input, #searchBox > button {
+  float: right; 
+} */
+#logo {
+  margin-bottom: 10px;
+  height: 80%;
+  width: 70%;
+  position: relative;
+  left: 40%;
+  margin-left: -25%;
+}
 .searchCard {
-	width: 300px;
-	height: 350px;
-	float: left;
-	/*display: inline-grid;*/
+  width: 300px;
+  height: 350px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  /*display: inline-grid;*/
+}
+#serviceDetail > img {
+  width: 100px;
+  height: 100px;
 }
 #serviceDetail {
-	width: 300px;
-	height: 300px;
+  width: 250px;
+  height: 300px;
 }

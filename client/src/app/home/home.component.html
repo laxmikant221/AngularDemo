@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark">
   <a class="navbar-brand" href="#">ServiceAtHome</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
   aria-label="Toggle navigation">
@@ -33,40 +33,38 @@
   </div>
 </nav>
 <router-outlet></router-outlet>
-<div class="container col-sm-5">
-  <div class="">
-    <div class="navbar-form">
-      <form [formGroup]="searchForm" (ngSubmit)="onSearchClick(searchKeyword)">
-        <div class="form-group">
-          <label for="InputServiceName">Type something to search</label>
-          <input type="text" class="form-control" formControlName="search" id="InputServiceName" 
-          placeholder="Service Name Or Service category Or Zip-code ......" 
-          name="searchtext"[(ngModel)]="searchKeyword">  
-          <div class="alert" *ngIf="!searchForm.controls['search'].valid 
-          && (searchForm.controls['search'].touched)">
-            <div [hidden]="!searchForm.controls['search'].errors">
-              Search text must contain 5 or more characters
-            </div>
+<div class="container col-sm-6" id="searchBox">
+  <div class="container">
+    <img src="../assets/frontimages/textlogo.png" id="logo">
+  </div>
+  <div class="navbar-form">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearchClick(searchKeyword)">
+      <div class="form-group from-inline">
+        <input type="text" class="form-control" formControlName="search" id="InputServiceName" 
+        placeholder="Service Name Or Service category Or Zip-code" 
+        name="searchtext" [(ngModel)]="searchKeyword">  
+        <div class="alert" *ngIf="!searchForm.controls['search'].valid 
+        && (searchForm.controls['search'].touched)">
+          <div [hidden]="!searchForm.controls['search'].errors">
+            Search text must contain 4 or more characters
           </div>
         </div>
-        <div class="form-group" style="text-align:center;">
-          <button type="submit" class="btn btn-default">Search</button>
-          <button type="reset" class="btn btn-default" (click)="showResults=false">
-            Clear
-          </button>
-        </div>
-      </form>
-      <div class="container text-center" *ngIf="isResultFound">
-        <span>No service found for your search</span>
       </div>
+      <button type="submit" class="btn btn-success btn-sm">Search</button>
+      <button type="reset" class="btn btn-warning btn-sm" (click)="clearMsg()">
+        Reset
+      </button>
+    </form>
+    <div class="container text-center" *ngIf="isResultFound">
+      <span>No service found for your search</span>
     </div>
   </div>
 </div>
 
 <div class="container" *ngIf="showResults" id="serviceList">
   <h4 class="text-center">Total Number of Available Services:({{serviceCount}})</h4>
-  <div class="container" *ngFor="let service of services; let i = index ">
-    <div class="col-sm-3 card searchCard">
+  <div class="container" *ngFor="let service of services; let i = index">
+    <div class="col-sm-3 card searchCard" id="serviceDetail">
       <img class="card-img-top" src="../assets/images/{{ service.imageUrl }}" 
       alt="Search image" width="100" height="100">
       <div class="card-body">
@@ -74,7 +72,7 @@
         <p class="card-text">Price per Hour: {{ service.price.priceHour | titlecase}}</p>
         <p class="card-text">Price per Day: {{ service.price.priceDay | titlecase}}</p>
         <p class="card-text">Price per Month: {{ service.price.priceMonth | titlecase}}</p>
-        <button (click)="serviceDescription(service._id)" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View Detail</button>
+        <button (click)="serviceDescription(service._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">View Detail</button>
       </div>
     </div>
   </div>
@@ -110,9 +108,9 @@
 
         <!-- Modal footer -->
         <div class="modal-footer" *ngFor="let service of descriptionData">
-          <a class="btn btn-success mr-auto" 
+          <a class="btn btn-success mr-auto btn-sm" 
           data-dismiss="modal" (click)="bookingLogin(service._id)">Book Now</a>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">
+          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">
             Close
           </button>
         </div>
