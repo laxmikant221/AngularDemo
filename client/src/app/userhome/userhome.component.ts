@@ -38,7 +38,10 @@ export class UserhomeComponent implements OnInit {
     serviceId: new FormControl(null),
     serviceName: new FormControl(null),
     customerName:new FormControl(null,Validators.required),
-    mobileNumber: new FormControl(null, Validators.required),
+    mobileNumber: new FormControl(null,[Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(10),
+      Validators.maxLength(10)]),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
     timeSlot: new FormControl(null, Validators.required),
@@ -88,7 +91,7 @@ export class UserhomeComponent implements OnInit {
   onSearchClick(searchKeyword) {
     this.searchword=searchKeyword;
     if(!this.searchForm.valid){
-      console.log('Invalid Form'); return;
+      swal('Search Keyword must contain more than 3 characters',{icon: 'warning'}); return;
     }
     this._servicedataService.SearchByName(this.searchword)
     .subscribe(
@@ -172,5 +175,12 @@ export class UserhomeComponent implements OnInit {
     this.isProceed = false;
     this.isBooking = true;
   }
+
+  // function mobileNumberValidate(control: formControl) {
+  //   debugger
+  //   return {error: true};
+
+  // }
+
   
 }

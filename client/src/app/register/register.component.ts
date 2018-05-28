@@ -27,14 +27,23 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    if(!this.registerForm.valid || (this.registerForm.controls.password.value != this.registerForm.controls.cpass.value)){
+    if(!this.registerForm.valid || 
+      (this.registerForm.controls.password.value 
+        != this.registerForm.controls.cpass.value)){
       swal("Invalid Form", {icon: "warning"}); return;
     }
 
     this._userService.register(JSON.stringify(this.registerForm.value))
     .subscribe(
-      data=> {swal("Congrats Registration Successfull!!",{icon: "success"}); this._router.navigate(['/login']);},
+      data=> {swal("Congrats Registration Successfull!!",{icon: "success"}); 
+      this._router.navigate(['/login']);},
       error=>console.error(error)
       )
   }
+
+//   function userNameValidator(control: FormControl): {[key: string]: any} {
+//   const value: string = control.value || '';
+//   const valid = value.match(/^[0-9]*$/);
+//   return valid ? null : {ssn: true};
+// }
 }

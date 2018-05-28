@@ -7,7 +7,8 @@ var schema = new Schema({
   username: {type:String, require:true},
   password:{type:String, require:true},
   creation_dt:{type:Date, require:true},
-  isAdmin: {type: Boolean, default: false}
+  isAdmin: {type: Boolean, default: false},
+  isVerified: { type: Boolean, default: false }
 });
 
 schema.statics.hashPassword = function hashPassword(password){

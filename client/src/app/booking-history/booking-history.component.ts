@@ -10,6 +10,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
   styleUrls: ['./booking-history.component.css']
 })
 export class BookingHistoryComponent implements OnInit {
+
 username:string='';
 email:string='';
 id:string='';

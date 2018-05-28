@@ -72,10 +72,7 @@ export class ManageServicesComponent implements OnInit {
       swal("New service Added Successfully", {
             icon: "success",
           })
-      // if(!confirm("Do you want to add more services????")) {
         this.formFlag = false
-      // }
-      
     },
     error=>{  
       swal("there was some error")});
@@ -109,10 +106,6 @@ export class ManageServicesComponent implements OnInit {
           });},
           error=> swal("Sorry, there was some eroor"))
       } 
-     else {
-      swal("Service is not deleted!");
-    }
-
     });
   }
   
