@@ -24,6 +24,7 @@ import {MatTableModule, MatSortModule, MatInputModule,
   MatPaginatorModule, MatProgressSpinnerModule,} from '@angular/material';
 import { EditServicesComponent } from './edit-services/edit-services.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import { VerfiyUserComponent } from './verfiy-user/verfiy-user.component';
   @NgModule({
     declarations: [
     AppComponent,
@@ -37,7 +38,8 @@ import { BookingHistoryComponent } from './booking-history/booking-history.compo
     HomeComponent,
     FilterPipe,
     EditServicesComponent,
-    BookingHistoryComponent
+    BookingHistoryComponent,
+    VerfiyUserComponent
     ],
     imports: [
     BrowserModule,

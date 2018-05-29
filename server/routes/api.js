@@ -12,54 +12,63 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "laxmikant.tripathi6@gmail.com",
-        pass: "9179669596"
+        pass: ""
     }
 });
-var rand,mailOptions,host,link;
+var rand,mailOptions,host,link,verifyToken;
 
 // for registration
 router.post('/register', function (req, res, next) {
-  addToDB(req, res);
-  rand=Math.floor((Math.random() * 100) + 54);
-    host=req.get('host');
-    link="http://localhost:4200/verify?id="+rand;
-    mailOptions={
-        to : req.body.email,
-        subject : "Please confirm your Email account",
-        html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
-    }
-    console.log(mailOptions);
-    smtpTransport.sendMail(mailOptions, function(error, response){
-     if(error){
-            console.log(error);
-        res.end("error");
-     }else{
-            console.log("Message sent: " + response.message);
-        res.end("sent");
-         }
-});
+  verifyUserEmail = req.body.email;
+  User.count({"email": req.body.email}, function(err, result){
+    if(err) return next(err)
+      if(result) {
+        res.json("present")
+      }
+      else {
+        addToDB(req, res);
+        rand=Math.floor((Math.random() * 1000) + 54);
+        verifyUserEmail = req.body.email;
+        verifyToken = req.body.email + rand;
+        link = "http://localhost:4200/verify/"+ verifyToken;
+
+        mailOptions={
+          to : req.body.email,
+          subject : "Please confirm your Email account",
+          html : "Hello, "+req.body.username+
+          "<br> Please Click on the link to verify your email.<br><a href="
+          +link+">Click here</a>"
+        }
+        smtpTransport.sendMail(mailOptions, function(error, response){
+         if(error){
+          console.log(error);
+          res.end("error");
+        }else{
+          console.log("Message sent: " + res.message);
+          res.end("sent");
+        }
+      });
+      }
+    });
 });
 
-router.get('/verify',function(req,res){
-console.log(req.protocol+":/"+req.get('host'));
-if((req.protocol+"://"+req.get('host'))==("http://"+host))
-{
-    console.log("Domain is matched. Information is from Authentic email");
-    if(req.query.id==rand)
-    {
-        console.log("email is verified");
-        res.end("<h1>Email "+mailOptions.to+" is been Successfully verified");
-    }
-    else
-    {
-        console.log("email is not verified");
-        res.end("<h1>Bad Request</h1>");
-    }
-}
-else
-{
-    res.end("<h1>Request is from unknown source");
-}
+router.get('/verify/:verifyToken',function(req,res){
+
+  if(req.params.verifyToken == verifyToken)
+  {
+    User.findOne({"email": verifyUserEmail}, function(err,result){
+      if(err) return next(err);
+      User.findByIdAndUpdate(result._id,{"isVerified":true}, function(err,res){
+        if(err) return next(err);
+      })
+    })
+    res.json("<h1>Email "+mailOptions.to+" is been Successfully verified");
+  }
+  else
+  {
+    console.log("email is not verified");
+    res.end("<h1>Bad Request</h1>");
+  }
 });
 
 async function addToDB(req, res) {

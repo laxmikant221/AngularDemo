@@ -98,4 +98,9 @@ export class UserService {
       headers:new HttpHeaders().append('Content-Type','application/json')
     });
   }
+  verifyUser(email: any){
+  return this._http.get('http://127.0.0.1:3000/api/verify/'+email,{
+      headers:new HttpHeaders().append('Content-Type','application/json')
+    });
+  }
 }

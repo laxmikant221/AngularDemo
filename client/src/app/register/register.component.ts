@@ -35,8 +35,16 @@ export class RegisterComponent implements OnInit {
 
     this._userService.register(JSON.stringify(this.registerForm.value))
     .subscribe(
-      data=> {swal("Congrats Registration Successfull!!",{icon: "success"}); 
-      this._router.navigate(['/login']);},
+      data=> {
+        if(data == "present") {
+          swal("This email is already Registered", {icon: "warning"})
+        } else { 
+          swal({
+            title:"Congrats Registration Successfull!!",
+            text: "A verification link has been sent to your email.",
+            icon: "success"}); 
+        this._router.navigate(['/login']);
+      }},
       error=>console.error(error)
       )
   }
