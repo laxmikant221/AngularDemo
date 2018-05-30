@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {FormGroup,FormControl,Validators} from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
+
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -13,6 +14,8 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./userhome.component.css']
 })
 export class UserhomeComponent implements OnInit {
+  // public min = Date();
+  // public max = new Date(2018, 3, 21, 20, 30);
   username:String='';
   email: String='';
   userId: string='';
@@ -44,7 +47,9 @@ export class UserhomeComponent implements OnInit {
       Validators.maxLength(10)]),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
-    timeSlot: new FormControl(null, Validators.required),
+    serviceDate: new FormControl(null, Validators.required),
+    fromTime: new FormControl(null, Validators.required),
+    toTime: new FormControl(null, Validators.required),
     email: new FormControl(null)
   })
 
@@ -151,11 +156,14 @@ export class UserhomeComponent implements OnInit {
     }
   }
 
-  confirmBooking() {
+  confirmBooking() {console.log(this.serviceBookingForm.value.toDate);
     this.serviceBookingForm.value.email = this.email;
     this.serviceBookingForm.value.serviceId = this.serviceId;
     this.serviceBookingForm.value.serviceName = this.serviceName;
-    console.log(this.serviceBookingForm.value);
+    console.log(this.serviceBookingForm.value.fromTime);
+    if (this.serviceBookingForm.value.fromTime > this.serviceBookingForm.value.toTime) {
+      swal("Invalid Time Slot Range"); return;
+    }
     if(!this.serviceBookingForm.valid){
       swal('Invalid Form'); return;
     }

@@ -40,46 +40,50 @@
       <div class="form-group">
         <label for="InputEmail1">Email address</label>
         <input formControlName="email" type="email" class="form-control" id="InputEmail1"  placeholder="Enter email" required> 
-        <div class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
-          <div [hidden]="!registerForm.controls['email'].errors.email">
+        <span class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
+          
+          <span [hidden]="!registerForm.controls['email'].errors.required">
+           Email is required.
+          </span><br>
+          <span [hidden]="!registerForm.controls['email'].errors.email">
            Please enter valid email.
-          </div>
-        </div>
-        <div class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
-          <div [hidden]="!registerForm.controls['email'].errors.required">
-           email is required.
-          </div>
-        </div>
+          </span>
+        </span>
+        <!-- <span class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
+          <span [hidden]="!registerForm.controls['email'].errors.required">
+           Email is required.
+          </span>
+        </span> -->
       </div>
+
       <div class="form-group">
         <label for="InputUsername">Username</label>
         <input formControlName="username" type="text" class="form-control" id="InputUsername"  placeholder="username" required>
-        <div class="alert" *ngIf="!registerForm.controls['username'].valid && (registerForm.controls['username'].touched)">
-          <div [hidden]="!registerForm.controls['username'].errors.required">
+        <span class="alert" *ngIf="!registerForm.controls['username'].valid && (registerForm.controls['username'].touched)">
+          <span [hidden]="!registerForm.controls['username'].errors.required">
            Username is required.
-          </div>
-        </div>
+          </span>
+        </span>
         
       </div>
       <div class="form-group">
         <label for="passwordInput">Password</label>
         <input formControlName="password" type="password" class="form-control" id="passwordInput"  placeholder="password" required>
-        <div class="alert" *ngIf="!registerForm.controls['password'].valid && (registerForm.controls['password'].touched)">
-          <div [hidden]="!registerForm.controls['password'].errors.required">
+        <span class="alert" *ngIf="!registerForm.controls['password'].valid && (registerForm.controls['password'].touched)">
+          <span [hidden]="!registerForm.controls['password'].errors.required">
            Password is required.
-          </div>
-        </div>
-        
+          </span>
+        </span>
       </div>
+
       <div class="form-group">
         <label for="CpasswordInput">Confirm Password</label>
         <input formControlName="cpass" type="password" class="form-control" id="CpasswordInput"  placeholder="password" required>
-        <div class="alert" *ngIf="!registerForm.controls['cpass'].valid && (registerForm.controls['cpass'].touched)">
-          <div [hidden]="!registerForm.controls['email'].errors.required">
-           Confirm passowrd is required.
-          </div>
-        </div>
-        
+        <span class="alert" *ngIf="!registerForm.controls['cpass'].valid && (registerForm.controls['cpass'].touched)">
+          <span [hidden]="!registerForm.controls['email'].errors.required">
+           Confirm password is required.
+          </span>
+        </span>
       </div>
       <!-- <div class="form-group">
         <label for="InputAdminCode">Admin Code</label>

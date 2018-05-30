@@ -265,7 +265,9 @@ router.post('/bookServices',function(req,res,next){
     mobileNumber: req.body.mobileNumber,
     address: req.body.address,
     pinCode: req.body.pinCode,
-    timeSlot: req.body.timeSlot,
+    serviceDate: req.body.serviceDate,
+    fromTime: req.body.fromTime,
+    toTime: req.body.toTime,
     serviceId: req.body.serviceId,
     serviceName: req.body.serviceName,
     creation_dt: Date.now()

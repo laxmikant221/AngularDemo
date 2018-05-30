@@ -31,7 +31,6 @@ export class VerfiyUserComponent implements OnInit {
     
   } 
   
-
   ngOnInit() {
   }
 

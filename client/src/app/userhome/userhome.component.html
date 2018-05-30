@@ -120,7 +120,7 @@
   </div>
 </div>
 <div class="container col-sm-5" *ngIf=(isProceed)>
-  <h4>Please provide your personal information</h4>
+  <h4 class="text-center">Please provide your personal information</h4>
   <form [formGroup]="serviceBookingForm">
     <div class="form-group">
       <label for="customerName">Please Enter Your Name</label>
@@ -139,10 +139,34 @@
       <input type="text" formControlName="pinCode" id="pinCode" class="form-control" name="pinCode">
     </div>
     <div class="form-group">
-      <label for="timeSlot">Choose Time Slot For Serving:</label>
-      <input type="radio" formControlName="timeSlot" name="timeSlot" value="Morning">Morning
-      <input type="radio" formControlName="timeSlot" name="timeSlot" value="Evening">Evening
+      <label>Select Date For Service:</label>
+      <!-- <input formControlName="serviceDate" [owlDateTimeTrigger]="dt3" 
+      [owlDateTime]="dt3">
+      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time> -->
+      <input type="date" name="serviceDate" formControlName="serviceDate">
     </div>
+    <div class="form-group">
+      <label>Select Time Slot</label><br>
+      <!-- <label>
+        From:
+        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12"
+        formControlName="fromDate"
+        [selectMode]="'rangeFrom'" [ngModel]="fromDate">
+        <owl-date-time [pickerType]="'timer'" #dt12></owl-date-time>
+      </label>
+
+      <label>
+       To:
+       <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13"
+       formControlName="toDate"
+       [selectMode]="'rangeTo'" [ngModel]="toDate">
+       <owl-date-time [pickerType]="'timer'" #dt13></owl-date-time>
+      </label> -->
+      <label>From</label>
+      <input type="time" name="fromTime" formControlName="fromTime">
+      <label>To</label>
+      <input type="time" name="toTime" formControlName="toTime">
+   </div>
     <button type="button" class="btn btn-success btn-sm mr-auto" 
     (click)="confirmBooking()">Confirm Booking</button>
     <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">Go Back</button>

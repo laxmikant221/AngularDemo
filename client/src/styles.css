@@ -1,6 +1,8 @@
 /**, body {
 	background-color: grey;
 }*/
+
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 .navbar {
 	background-color: #00264d;
 	color: white;

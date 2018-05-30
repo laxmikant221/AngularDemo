@@ -25,6 +25,7 @@ import {MatTableModule, MatSortModule, MatInputModule,
 import { EditServicesComponent } from './edit-services/edit-services.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { VerfiyUserComponent } from './verfiy-user/verfiy-user.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
   @NgModule({
     declarations: [
     AppComponent,
@@ -53,7 +54,9 @@ import { VerfiyUserComponent } from './verfiy-user/verfiy-user.component';
     MatSortModule,
     MatInputModule, 
     MatPaginatorModule, 
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
     ],
     providers: [
     UserService, 
