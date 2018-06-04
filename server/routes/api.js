@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Service = require('../models/services.js');
 var BookServices = require('../models/bookService.js');
+var Notification = require('../models/notifications.js');
 var passport = require('passport');
 var multer = require('multer');
 var path = require("path");
@@ -12,7 +13,7 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "laxmikant.tripathi6@gmail.com",
-        pass: ""
+        pass: "9179669596"
     }
 });
 var rand,mailOptions,host,link,verifyToken;
@@ -23,7 +24,7 @@ router.post('/register', function (req, res, next) {
   User.count({"email": req.body.email}, function(err, result){
     if(err) return next(err)
       if(result) {
-        res.json("present")
+       return res.json("present")
       }
       else {
         addToDB(req, res);
@@ -117,8 +118,11 @@ router.post('/adminlogin',function(req,res,next){
     req.logIn(user, function(err) {
       if (err) { 
         return res.status(501).json(err); 
-      } else {
+      } else if(req.user.isAdmin){
         return res.status(200).json({message:'Login Success'});
+      }
+      else {
+        return res.status(501).json(err);
       }
       
     });
@@ -259,28 +263,88 @@ router.get('/getServiceDescription',function(req,res,next){
 })
 //to book services
 router.post('/bookServices',function(req,res,next){
-  var bookService = new BookServices({
-    email: req.body.email,
-    customerName: req.body.customerName,
-    mobileNumber: req.body.mobileNumber,
-    address: req.body.address,
-    pinCode: req.body.pinCode,
-    serviceDate: req.body.serviceDate,
-    fromTime: req.body.fromTime,
-    toTime: req.body.toTime,
-    serviceId: req.body.serviceId,
-    serviceName: req.body.serviceName,
-    creation_dt: Date.now()
-    
-  });
-  try {
-    doc = bookService.save();
-    return res.status(201).json(doc);
-  }
-  catch (err) {
-    return res.status(501).json(err);
-  }
+  // var fromTime1 = [];
+  // var fromTime2 = [];
+  // var toTime1 = [];
+  // var toTime2 = [];
+  // fromTime1=req.body.fromTime.split(':');
+  // toTime1= req.body.toTime.split(':');
+  // if(time[0]<time[1]) {
+  //   console.log("hour less than minutes")
+  // }
+  // console.log(time);
+  BookServices.find({"serviceId":req.body.serviceId,
+   "serviceDate": req.body.serviceDate,
+   "fromTime": req.body.fromTime, "toTime": req.body.toTime}, function(err,result){
+    if(err) return next(err);
+    // fromTime2=result.fromTime.split(':');
+    // toTime2 = result.toTime.split(':');
+    // if(fromTime1[0] == fromTime2[0]) {
+    //   if(fromTime1[1]<=fromTime2[1]) {
+    //     console.log("fromTime is already booked")
+    //   } else if(toTime1[0] == toTime2[0]) {
+    //     if(toTime1[1] <= toTime2[1])
+    //       console.log("totime already  booked")
+    //   } else {
+    //     console.log("slot available")
+    //   }
+    // }
+    if(result.length > 0) {
+      console.log("present");
+      console.log(result);
+      return res.json("booked")
+    } else {
+      var notification = new Notification({
+        customerEmail: req.body.email,
+        serviceId: req.body.serviceId,
+        serviceName: req.body.serviceName,
+        customerName: req.body.customerName,
+        message: "A new service booked by",
+        creation_dt: Date.now()
+      }) 
+      var bookService = new BookServices({
+        email: req.body.email,
+        customerName: req.body.customerName,
+        mobileNumber: req.body.mobileNumber,
+        address: req.body.address,
+        pinCode: req.body.pinCode,
+        serviceDate: req.body.serviceDate,
+        fromTime: req.body.fromTime,
+        toTime: req.body.toTime,
+        serviceId: req.body.serviceId,
+        serviceName: req.body.serviceName,
+        creation_dt: Date.now()
 
+      });
+      try {
+        doc = bookService.save();
+        notification.save();
+        console.log(bookService);
+        mailOptions={
+          to : req.body.email,
+          subject : "Thank you for booking the service",
+          html : "Hello, "+req.body.customerName+
+          "<br> You just booked.<br>" + req.body.serviceName + " for-- " + req.body.serviceDate +
+          " for the " + req.body.fromTime + " -to- " + req.body.toTime + " slot"          
+        }
+        smtpTransport.sendMail(mailOptions, function(error, response){
+         if(error){
+          console.log(error);
+          res.json("error");
+        }else{
+          console.log("Message sent:");
+          res.json("sent");
+        }
+      });
+        return res.status(201).json(bookService);
+      }
+      catch (err) {
+        return res.status(501).json(err);
+      }
+
+      
+    } 
+  }) 
 })
 //to get booking history
 router.get('/userBookings',function(req,res,next){ 
@@ -309,9 +373,39 @@ router.get('/serviceBooked', function(req,res,next){
 
 //cancel booking
 router.delete("/cancelBooking", function (req, res) {
-  BookServices.findByIdAndRemove(req.query.id,function(err,req){
-    if(err) res.status(501).json(err)
-      res.send(req.body);
+  BookServices.findOne({"_id": req.query.id}, function(err,result){
+    if(err) res.json(err)
+      else{
+        var notification = new Notification({
+        customerEmail: result.email,
+        serviceId: result.serviceId,
+        serviceName: result.serviceName,
+        customerName: result.customerName,
+        message: "A service Cancelled by",
+        creation_dt: Date.now()
+      }) 
+        notification.save();
+        mailOptions={
+          to : result.email,
+          subject : "A service has been Successfully cancelled",
+          html : "Hello, "+result.customerName+
+          "<br> You just Cancelled.<br>" + result.serviceName + " for--" +
+          " for the " + result.fromTime + " -to- " + result.toTime + " slot."          
+        }
+        smtpTransport.sendMail(mailOptions, function(error, response){
+          if(error){
+            console.log(error);
+            res.json("error");
+          }else{
+            console.log("Message sent:");
+            res.json("sent");
+          }
+        });
+        BookServices.findByIdAndRemove(req.query.id,function(err,req){
+          if(err) res.status(501).json(err)
+            res.send(req.body);
+        })
+      }
   })
 
 })
@@ -330,5 +424,11 @@ router.put("/updateBookingById", function (req, res) {
       res.send(req.body);
   })
 
+})
+router.get("/notifications/:email", function(req,res){
+  Notification.find({"customerEmail": req.params.email},function(err,notifications){
+    if(err) return next(err);
+    return res.json(notifications);
+  })
 })
 module.exports = router;

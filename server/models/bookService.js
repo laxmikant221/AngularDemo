@@ -9,7 +9,7 @@ var schema = new Schema({
   mobileNumber: {type:String, require:true},
   address: {type:String, require:true},
   pinCode: {type: String, require:true},
-  serviceDate: {type: String, require:true},
+  serviceDate: {type: Date, require:true},
   fromTime: {type: String, require:true},
   toTime: {type: String, require:true},
   email: {type:String, require:true},

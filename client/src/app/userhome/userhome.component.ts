@@ -32,6 +32,11 @@ export class UserhomeComponent implements OnInit {
   serviceCount: String='';
   showResults:boolean=false;
   isResultFound:boolean=false;
+  showSearchBox: boolean=true;
+  showPreview: boolean=false;
+  previewData: any;
+  notifications:any;
+  notificationLength: String='';
 
   searchForm:FormGroup = new FormGroup({
     search:new FormControl(null,Validators.minLength(4)) 
@@ -61,6 +66,13 @@ export class UserhomeComponent implements OnInit {
       this.username = data.username;
       this.email = data.email;
       this.userId = data._id;
+      this._user.getNotifications(this.email)
+      .subscribe(
+        data=>{
+          this.notifications=data;
+          this.notificationLength= data.length;
+        },
+        err=>console.log(err))
      },
      error=>this._router.navigate(['/login']));
 
@@ -70,6 +82,7 @@ export class UserhomeComponent implements OnInit {
           data=>{
             this.descriptionData = data
             this.isBooking = true;
+            this.showSearchBox = false;
           },
           error=>{
             swal("Ooops there was some error")
@@ -153,6 +166,7 @@ export class UserhomeComponent implements OnInit {
     if(confirm("Are you sure you want to Cancel this Booking")) { 
       localStorage.removeItem('BookingServiceId');
       this.isBooking = false;
+      this.showSearchBox = true;
     }
   }
 
@@ -160,7 +174,6 @@ export class UserhomeComponent implements OnInit {
     this.serviceBookingForm.value.email = this.email;
     this.serviceBookingForm.value.serviceId = this.serviceId;
     this.serviceBookingForm.value.serviceName = this.serviceName;
-    console.log(this.serviceBookingForm.value.fromTime);
     if (this.serviceBookingForm.value.fromTime > this.serviceBookingForm.value.toTime) {
       swal("Invalid Time Slot Range"); return;
     }
@@ -169,19 +182,34 @@ export class UserhomeComponent implements OnInit {
     }
     this._user.bookServices(JSON.stringify(this.serviceBookingForm.value))
     .subscribe(
-      data=> {
-        swal("Congratulations.. Booking Successfull!!!!!!!!!!");
+      data=> {this.previewData = data
+        this.previewData = Array.of(this.previewData)
+        console.log(data)
+        if(data == "booked") {
+          swal("This time slot already booked. Please choose another one.",{icon: "warning"});
+        } else {
+          swal("Congratulations.. Booking Successfull!!!!!!!!!!");
+          
+          console.log(this.previewData)
         this.isBooking = false;
         this.isProceed = false; 
+        this.showPreview = true;
+        this.showSearchBox = true;
         localStorage.removeItem('BookingServiceId');
-        this._router.navigate(['/user']);
+        // this._router.navigate(['/user']);
+        }
+        
       },
-      error=>swal(error)
+      error=>alert(error)
     )
   }
   goBack() {
     this.isProceed = false;
     this.isBooking = true;
+  }
+  clearMsg() {
+    this.isResultFound = false;
+    this.showResults = false;
   }
 
   // function mobileNumberValidate(control: formControl) {

@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     if(!this.registerForm.valid || 
       (this.registerForm.controls.password.value 
         != this.registerForm.controls.cpass.value)){
-      swal("Invalid Form", {icon: "warning"}); return;
+      alert("Invalid Form", {icon: "warning"}); return;
     }
 
     this._userService.register(JSON.stringify(this.registerForm.value))
@@ -49,9 +49,18 @@ export class RegisterComponent implements OnInit {
       )
   }
 
-//   function userNameValidator(control: FormControl): {[key: string]: any} {
-//   const value: string = control.value || '';
-//   const valid = value.match(/^[0-9]*$/);
-//   return valid ? null : {ssn: true};
-// }
+  function emailDomainValidator(control: FormControl) { 
+  let email = control.value; 
+  if (email && email.indexOf("@") != -1) { 
+    let [_, domain] = email.split("@"); 
+    if (domain !== "bestpeers.com") { 
+      return {
+        emailDomain: {
+          parsedDomain: domain
+        }
+      }
+    }
+  }
+  return null; 
+}
 }

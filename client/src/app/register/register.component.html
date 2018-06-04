@@ -40,7 +40,7 @@
       <div class="form-group">
         <label for="InputEmail1">Email address</label>
         <input formControlName="email" type="email" class="form-control" id="InputEmail1"  placeholder="Enter email" required> 
-        <span class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
+        <div class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
           
           <span [hidden]="!registerForm.controls['email'].errors.required">
            Email is required.
@@ -48,7 +48,8 @@
           <span [hidden]="!registerForm.controls['email'].errors.email">
            Please enter valid email.
           </span>
-        </span>
+          <p [hidden]="!registerForm.controls['email'].errors.emailDomain">Email must be on the bestpeers.com domain</p>
+        </div>
         <!-- <span class="alert" *ngIf="!registerForm.controls['email'].valid && (registerForm.controls['email'].touched)">
           <span [hidden]="!registerForm.controls['email'].errors.required">
            Email is required.

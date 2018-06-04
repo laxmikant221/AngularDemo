@@ -17,6 +17,9 @@
       <a class="nav-link" [routerLink]="['/booking-history']"> Booking History </a>
     </li>
     <li class="nav-item">
+      <a class="nav-link">Notifications</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" (click)="logout()">Log out</a>
     </li>
   </ul>
@@ -56,12 +59,12 @@
                 <p><b>Pin Code:</b> {{booking.pinCode}}</p>
               </td>
               <td>
-                <p><b>Time Slot:</b> {{booking.timeSlot}}</p>
+                <p><b>Time Slot:</b> {{booking.fromTime}} - {{booking.toTime}}</p>
               </td>
             </tr>
             <tr>
               <td>
-                <p><b>Booking Date:</b> {{booking.creation_dt}}</p>
+                <p><b>Booking Date:</b> {{booking.serviceDate | date}}</p>
               </td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="getBookingInfo(booking._id)" data-toggle="modal" data-target="#editModal">Update Details</button>

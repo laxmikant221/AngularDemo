@@ -7,20 +7,29 @@
 <div class="collapse navbar-collapse" id="navbarNav">
   <ul class="navbar-nav mr-auto">
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/user']">Home</a>
+      <a class="nav-link" [routerLink]="['/user']">
+        <span class="fa fa-home fa-fw">Home</span>
+      </a>
     </li>
+  </ul>
+  <ul class="navbar-nav">
     <li class="nav-item ">
       <a class="nav-link" [routerLink]="['/booking-history',userId]"> Booking History </a>
     </li> 
-  </ul>
-  <ul class="navbar-nav">
-    <form class="form-inline" [formGroup]="searchForm" 
-    (ngSubmit)="onSearchClick(searchKeyword)" >
-      <input class="form-control mr-sm-2" formControlName="search" 
-      id="InputServiceName"  type="text" placeholder="Search" name="searchtext"
-      [(ngModel)]="searchKeyword">
-      <button class="btn btn-success btn-sm" type="submit">Search</button>
-    </form>
+    <!-- <li class="nav-item">
+      <a href="#notification" class="nav-link" data-toggle="collapse">Notifications <span class="badge badge-info">{{notificationLength}}</span> </a>
+    </li> -->
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" id="navdropdown" data-toggle="dropdown">
+        Notifications <span class="badge badge-info">{{notificationLength}}</span> 
+      </a>
+
+      <div class="dropdown-menu">
+        <div *ngFor="let notification of notifications; let i = index ">
+          <span class="text-success"><b>{{i+1}}.</b> {{notification.serviceName | titlecase}}.<br> {{notification.message}} {{notification.customerName | titlecase}}</span>
+        </div>
+      </div>
+    </li>
     <li class="nav-item">
       <a class="nav-link" (click)="logout()">Log out</a>
     </li>
@@ -29,11 +38,31 @@
 </nav>
 <router-outlet></router-outlet>
 
-<div class="container-fluid" *ngIf="">
+<div class="container col-sm-6" id="searchBox" *ngIf="showSearchBox">
   <div class="container">
-    <p>You have successfully logged in to our system.</p>
-    <hr>
-    <p>You are most Welcome in our community. Thanks for joining us....</p>
+    <img src="../assets/frontimages/textlogo.png" id="logo">
+  </div>
+  <div class="navbar-form">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearchClick(searchKeyword)">
+      <div class="form-group from-inline">
+        <input type="text" class="form-control" formControlName="search" id="InputServiceName" 
+        placeholder="Service Name Or Service category Or Zip-code" 
+        name="searchtext" [(ngModel)]="searchKeyword">  
+        <div class="alert" *ngIf="!searchForm.controls['search'].valid 
+        && (searchForm.controls['search'].touched)">
+          <div [hidden]="!searchForm.controls['search'].errors">
+            Search text must contain 4 or more characters
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success btn-sm">Search</button>
+      <button type="reset" class="btn btn-warning btn-sm" (click)="clearMsg()">
+        Reset
+      </button>
+    </form>
+    <div class="container text-center" *ngIf="isResultFound">
+      <span>No service found for your search</span>
+    </div>
   </div>
 </div>
 
@@ -171,4 +200,16 @@
     (click)="confirmBooking()">Confirm Booking</button>
     <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">Go Back</button>
   </form>
+</div>
+<div class="container col-sm-5" id="previewBooking" *ngIf="showPreview">
+  <div  *ngFor="let preview of previewData">
+    <p><b>Service Name:</b> {{preview.serviceName | titlecase}}</p>
+    <p><b>Customer Name:</b> {{preview.customerName | titlecase}}</p>
+    <p><b>Mobile Number:</b> {{preview.mobileNumber | titlecase}}</p>
+    <p><b>Address:</b> {{preview.address | titlecase}}</p>
+    <p><b>Service Date:</b> {{preview.serviceDate | date}}</p>
+    <p><b>Service Time-Slot:</b> {{preview.fromTime | titlecase}} -- {{preview.toTime}}</p>
+    
+  </div>
+  
 </div>
