@@ -49,18 +49,18 @@ export class RegisterComponent implements OnInit {
       )
   }
 
-  function emailDomainValidator(control: FormControl) { 
-  let email = control.value; 
-  if (email && email.indexOf("@") != -1) { 
-    let [_, domain] = email.split("@"); 
-    if (domain !== "bestpeers.com") { 
-      return {
-        emailDomain: {
-          parsedDomain: domain
-        }
-      }
-    }
-  }
-  return null; 
-}
+//   function emailDomainValidator(control: FormControl) { 
+//   let email = control.value; 
+//   if (email && email.indexOf("@") != -1) { 
+//     let [_, domain] = email.split("@"); 
+//     if (domain !== "bestpeers.com") { 
+//       return {
+//         emailDomain: {
+//           parsedDomain: domain
+//         }
+//       }
+//     }
+//   }
+//   return null; 
+// }
 }

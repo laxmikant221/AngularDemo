@@ -57,3 +57,7 @@
 #notification{
 	z-index: -1;
 }
+#inlineForm > input {
+	margin-right: 6%;
+}
+

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import {FormGroup,FormControl,Validators} from '@angular/forms';
+import {FormGroup, FormControl, Validators } from '@angular/forms';
 import { ServiceDataService } from '../services/service-data.service';
 import {MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { UserService } from '../services/user.service';
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   searchForm:FormGroup = new FormGroup({
     search:new FormControl(null,Validators.minLength(4)) 
   })
+  
 
   constructor(private _router:Router, private _user: UserService,
    private _servicedataService:ServiceDataService){

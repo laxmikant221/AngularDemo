@@ -13,7 +13,7 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "laxmikant.tripathi6@gmail.com",
-        pass: "9179669596"
+        pass: ""
     }
 });
 var rand,mailOptions,host,link,verifyToken;
@@ -263,37 +263,16 @@ router.get('/getServiceDescription',function(req,res,next){
 })
 //to book services
 router.post('/bookServices',function(req,res,next){
-  // var fromTime1 = [];
-  // var fromTime2 = [];
-  // var toTime1 = [];
-  // var toTime2 = [];
-  // fromTime1=req.body.fromTime.split(':');
-  // toTime1= req.body.toTime.split(':');
-  // if(time[0]<time[1]) {
-  //   console.log("hour less than minutes")
-  // }
-  // console.log(time);
-  BookServices.find({"serviceId":req.body.serviceId,
-   "serviceDate": req.body.serviceDate,
-   "fromTime": req.body.fromTime, "toTime": req.body.toTime}, function(err,result){
-    if(err) return next(err);
-    // fromTime2=result.fromTime.split(':');
-    // toTime2 = result.toTime.split(':');
-    // if(fromTime1[0] == fromTime2[0]) {
-    //   if(fromTime1[1]<=fromTime2[1]) {
-    //     console.log("fromTime is already booked")
-    //   } else if(toTime1[0] == toTime2[0]) {
-    //     if(toTime1[1] <= toTime2[1])
-    //       console.log("totime already  booked")
-    //   } else {
-    //     console.log("slot available")
-    //   }
-    // }
-    if(result.length > 0) {
-      console.log("present");
-      console.log(result);
-      return res.json("booked")
-    } else {
+  
+  // BookServices.find({"serviceId":req.body.serviceId,
+  //  "serviceDate": req.body.serviceDate,
+  //  "fromTime": req.body.fromTime, "toTime": req.body.toTime}, function(err,result){
+  //   if(err) return next(err);
+  //   if(result.length > 0) {
+  //     console.log("present");
+  //     console.log(result);
+  //     return res.json("booked")
+  //   } else {
       var notification = new Notification({
         customerEmail: req.body.email,
         serviceId: req.body.serviceId,
@@ -308,9 +287,10 @@ router.post('/bookServices',function(req,res,next){
         mobileNumber: req.body.mobileNumber,
         address: req.body.address,
         pinCode: req.body.pinCode,
-        serviceDate: req.body.serviceDate,
-        fromTime: req.body.fromTime,
-        toTime: req.body.toTime,
+        timeSlots: req.body.timeSlots,
+        // serviceDate: req.body.serviceDate,
+        // fromTime: req.body.fromTime,
+        // toTime: req.body.toTime,
         serviceId: req.body.serviceId,
         serviceName: req.body.serviceName,
         creation_dt: Date.now()
@@ -343,9 +323,9 @@ router.post('/bookServices',function(req,res,next){
       }
 
       
-    } 
+     
   }) 
-})
+// })
 //to get booking history
 router.get('/userBookings',function(req,res,next){ 
   BookServices.find({"email": req.query.email},function(err, bookedServices) { 
@@ -429,6 +409,6 @@ router.get("/notifications/:email", function(req,res){
   Notification.find({"customerEmail": req.params.email},function(err,notifications){
     if(err) return next(err);
     return res.json(notifications);
-  })
+  }).sort({"creation_dt": -1})
 })
 module.exports = router;

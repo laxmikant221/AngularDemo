@@ -58,14 +58,17 @@
               <td>
                 <p><b>Pin Code:</b> {{booking.pinCode}}</p>
               </td>
+              
+            </tr>
+            <tr *ngFor="let slot of booking.timeSlots; let i= index ">
+              <td>Time-Slot- {{i}}
+                <p><b>Date:</b> {{slot.serviceDate | date}}</p>
+              </td>
               <td>
-                <p><b>Time Slot:</b> {{booking.fromTime}} - {{booking.toTime}}</p>
+                <p><b>Time:</b> {{booking.timeSlots[0].fromTime}} -to-  {{slot.toTime}}</p>
               </td>
             </tr>
             <tr>
-              <td>
-                <p><b>Booking Date:</b> {{booking.serviceDate | date}}</p>
-              </td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="getBookingInfo(booking._id)" data-toggle="modal" data-target="#editModal">Update Details</button>
                 <button class="btn btn-sm btn-danger" (click)="cancelBooking(booking._id)">Cancel Booking</button>

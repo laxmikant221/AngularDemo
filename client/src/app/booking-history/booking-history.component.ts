@@ -38,6 +38,7 @@ bookingInfo:any;
       .subscribe(
       data=> {
         this.bookingDetails = data;
+        console.log(data)
       },
       error=>this._router.navigate(['/user']))
     },

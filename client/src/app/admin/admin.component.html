@@ -76,15 +76,16 @@
                   <p><b>Pin Code:</b> {{booking.pinCode}}</p>
                 </td>
               </tr>
-              <tr>
+              <tr *ngFor="let slot of booking.timeSlots; let i = index ">
                 <td>
-                  <p><b>Time Slot:</b> {{booking.timeSlot}}</p>
+                  <p><b>Time Slot-{{i+1}}:</b> {{slot.serviceDate | date}}</p>
+                </td>
+                <td>
+                  <p><b>From:</b> {{slot.fromTime}} <b>To:</b> {{slot.toTime}}</p>
                 </td>
               </tr>
               <tr>
-                <td>
-                  <p><b>Booking Date:</b> {{booking.creation_dt}}</p>
-                </td>
+                
               </tr>
             </tbody>
           </table>

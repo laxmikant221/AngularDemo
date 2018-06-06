@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { ServiceDataService } from '../services/service-data.service';
 import { Router } from '@angular/router';
-import {FormGroup,FormControl,Validators} from '@angular/forms';
+import {FormGroup,FormControl,FormArray,FormBuilder,Validators} from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 
@@ -16,6 +16,7 @@ import 'rxjs/add/operator/map';
 export class UserhomeComponent implements OnInit {
   // public min = Date();
   // public max = new Date(2018, 3, 21, 20, 30);
+  timeSlots: any[] = [];
   username:String='';
   email: String='';
   userId: string='';
@@ -52,14 +53,16 @@ export class UserhomeComponent implements OnInit {
       Validators.maxLength(10)]),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
-    serviceDate: new FormControl(null, Validators.required),
-    fromTime: new FormControl(null, Validators.required),
-    toTime: new FormControl(null, Validators.required),
-    email: new FormControl(null)
+    // serviceDate: new FormControl(null, Validators.required),
+    // fromTime: new FormControl(null, Validators.required),
+    // toTime: new FormControl(null, Validators.required),
+    email: new FormControl(null),
+    timeSlots: this._formBuilder.array([ this.createTimeSlots() ])
   })
 
   constructor(private _user:UserService, private _router:Router, 
-    private _http:HttpClient, private _servicedataService:ServiceDataService) { 
+    private _http:HttpClient, private _servicedataService:ServiceDataService,
+    private _formBuilder:FormBuilder) { 
     this._user.user()
     .subscribe(
      data=>{
@@ -104,6 +107,19 @@ export class UserhomeComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  createTimeSlots(): FormGroup {
+    return this._formBuilder.group({
+      serviceDate: '',
+      fromTime: '',
+      toTime: ''
+    });
+  }
+  
+  addTimeSlots(): void {
+    this.timeSlots = this.serviceBookingForm.get('timeSlots') as FormArray;
+    this.timeSlots.push(this.createTimeSlots());
   }
 
   onSearchClick(searchKeyword) {
@@ -170,13 +186,14 @@ export class UserhomeComponent implements OnInit {
     }
   }
 
-  confirmBooking() {console.log(this.serviceBookingForm.value.toDate);
+  confirmBooking() {
+
     this.serviceBookingForm.value.email = this.email;
     this.serviceBookingForm.value.serviceId = this.serviceId;
     this.serviceBookingForm.value.serviceName = this.serviceName;
-    if (this.serviceBookingForm.value.fromTime > this.serviceBookingForm.value.toTime) {
-      swal("Invalid Time Slot Range"); return;
-    }
+    // if (this.serviceBookingForm.value.fromTime > this.serviceBookingForm.value.toTime) {
+    //   swal("Invalid Time Slot Range"); return;
+    // }
     if(!this.serviceBookingForm.valid){
       swal('Invalid Form'); return;
     }
@@ -194,7 +211,7 @@ export class UserhomeComponent implements OnInit {
         this.isBooking = false;
         this.isProceed = false; 
         this.showPreview = true;
-        this.showSearchBox = true;
+        // this.showSearchBox = true;
         localStorage.removeItem('BookingServiceId');
         // this._router.navigate(['/user']);
         }
@@ -210,6 +227,11 @@ export class UserhomeComponent implements OnInit {
   clearMsg() {
     this.isResultFound = false;
     this.showResults = false;
+  }
+
+  closePreview() {
+    this.showPreview = false;
+    this.showSearchBox = true;
   }
 
   // function mobileNumberValidate(control: formControl) {

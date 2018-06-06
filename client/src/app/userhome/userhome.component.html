@@ -24,7 +24,7 @@
         Notifications <span class="badge badge-info">{{notificationLength}}</span> 
       </a>
 
-      <div class="dropdown-menu">
+      <div class="dropdown-menu" id="notification">
         <div *ngFor="let notification of notifications; let i = index ">
           <span class="text-success"><b>{{i+1}}.</b> {{notification.serviceName | titlecase}}.<br> {{notification.message}} {{notification.customerName | titlecase}}</span>
         </div>
@@ -148,7 +148,7 @@
     <button class="btn btn-warning btn-sm" (click)=(cancel())>Cancel Booking</button>
   </div>
 </div>
-<div class="container col-sm-5" *ngIf=(isProceed)>
+<div class="container col-sm-8" *ngIf=(isProceed)>
   <h4 class="text-center">Please provide your personal information</h4>
   <form [formGroup]="serviceBookingForm">
     <div class="form-group">
@@ -167,49 +167,71 @@
       <label for="pinCode">Please Enter Pin Code</label>
       <input type="text" formControlName="pinCode" id="pinCode" class="form-control" name="pinCode">
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label>Select Date For Service:</label>
-      <!-- <input formControlName="serviceDate" [owlDateTimeTrigger]="dt3" 
-      [owlDateTime]="dt3">
-      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time> -->
       <input type="date" name="serviceDate" formControlName="serviceDate">
     </div>
     <div class="form-group">
       <label>Select Time Slot</label><br>
-      <!-- <label>
-        From:
-        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12"
-        formControlName="fromDate"
-        [selectMode]="'rangeFrom'" [ngModel]="fromDate">
-        <owl-date-time [pickerType]="'timer'" #dt12></owl-date-time>
-      </label>
-
-      <label>
-       To:
-       <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13"
-       formControlName="toDate"
-       [selectMode]="'rangeTo'" [ngModel]="toDate">
-       <owl-date-time [pickerType]="'timer'" #dt13></owl-date-time>
-      </label> -->
       <label>From</label>
       <input type="time" name="fromTime" formControlName="fromTime">
       <label>To</label>
       <input type="time" name="toTime" formControlName="toTime">
-   </div>
+    </div> -->
+    <div>
+      <label>Choose time slots for service delivery:</label>
+      <form formArrayName="timeSlots"  *ngFor="let timeSlot of serviceBookingForm.get('timeSlots').controls; let i =index " >
+        <div [formGroupName]="i" class="form-inline" id="inlineForm">
+          <!-- <label for="serviceDate">Date:</label> -->
+          <input formControlName="serviceDate"
+            class="form-control" 
+            placeholder="Service Date" 
+            [owlDateTimeTrigger]="dt3" 
+            [owlDateTime]="dt3" >
+          <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+          
+          <!-- <label form="fromTime">From Time:</label> -->
+          <input formControlName="fromTime" 
+            class="form-control" 
+            placeholder="From time"
+            [owlDateTimeTrigger]="dt12" 
+            [owlDateTime]="dt12"
+            [selectMode]="'rangeFrom'" 
+            [ngModel]="fromTime" >
+          <owl-date-time [pickerType]="'timer'" #dt12></owl-date-time>&nbsp;
+          
+          <!-- <label for="toTime">To Time:</label> -->
+          <input formControlName="toTime" 
+            class="form-control" 
+            placeholder="To time"
+            [owlDateTimeTrigger]="dt13" 
+            [owlDateTime]="dt13"
+            [selectMode]="'rangeTo'" 
+            [ngModel]="toTime" >
+          <owl-date-time [pickerType]="'timer'" #dt13></owl-date-time>&nbsp;
+        </div><br>
+      </form>
+      <button type="button" class="btn btn-warning btn-sm" (click)="addTimeSlots()">  Add Time-Slots
+      </button>
+    </div><br>
     <button type="button" class="btn btn-success btn-sm mr-auto" 
     (click)="confirmBooking()">Confirm Booking</button>
     <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">Go Back</button>
   </form>
 </div>
-<div class="container col-sm-5" id="previewBooking" *ngIf="showPreview">
+<div class="container col-sm-3" id="previewBooking" *ngIf="showPreview">
+  <h4 class="text-center">Booking Information<hr></h4>
   <div  *ngFor="let preview of previewData">
     <p><b>Service Name:</b> {{preview.serviceName | titlecase}}</p>
     <p><b>Customer Name:</b> {{preview.customerName | titlecase}}</p>
     <p><b>Mobile Number:</b> {{preview.mobileNumber | titlecase}}</p>
     <p><b>Address:</b> {{preview.address | titlecase}}</p>
-    <p><b>Service Date:</b> {{preview.serviceDate | date}}</p>
-    <p><b>Service Time-Slot:</b> {{preview.fromTime | titlecase}} -- {{preview.toTime}}</p>
+    <div class="container" *ngFor="let slot  of preview.timeSlots">
+      <p><b> Date:</b> {{slot.serviceDate | date}}</p>
+    <p><b>Time-Slot:</b> {{slot.fromTime}} -- {{slot.toTime}}</p>
+    </div>
     
   </div>
+  <button class="btn btn-sm btn-success" (click)="closePreview()">Close</button>
   
 </div>
