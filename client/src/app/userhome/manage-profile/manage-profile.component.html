@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-sm navbar-dark">
+  <h1 class="navbar-brand">Hello {{username}}!</h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/user']">
+        <span class="fa fa-home fa-fw">Home</span>
+      </a>
+    </li>
+  </ul>
+  <ul class="navbar-nav">
+    <li class="nav-item ">
+      <a class="nav-link" [routerLink]="['/booking-history',userId]"> Booking History </a>
+    </li> 
+
+    <!-- <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" id="navdropdown" data-toggle="dropdown">
+        Notifications <span class="badge badge-info">{{notificationLength}}</span> 
+      </a>
+
+      <div class="dropdown-menu" id="notification">
+        <div *ngFor="let notification of notifications; let i = index ">
+          <span class="text-success"><b>{{i+1}}.</b> {{notification.serviceName | titlecase}}.<br> {{notification.message}} {{notification.customerName | titlecase}}</span>
+        </div>
+      </div>
+    </li> -->
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/manage-profile',userId]">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="logout()">Log out</a>
+    </li>
+  </ul>
+</div>
+</nav>
+<router-outlet></router-outlet>

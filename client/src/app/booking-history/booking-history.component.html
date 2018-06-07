@@ -16,9 +16,9 @@
     <li class="nav-item ">
       <a class="nav-link" [routerLink]="['/booking-history']"> Booking History </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link">Notifications</a>
-    </li>
+    </li> -->
     <li class="nav-item">
       <a class="nav-link" (click)="logout()">Log out</a>
     </li>
@@ -26,7 +26,7 @@
 </div>
 </nav>
 <router-outlet></router-outlet>
-<div class="container col-sm-8" id="bookingHistory">
+<div class="container col-sm-10" id="bookingHistory">
   <h5 class="text-center">Services You have booked</h5>
   <div class="container" >
     <div class="container" *ngFor="let booking of bookingDetails">
@@ -69,6 +69,9 @@
               </td>
             </tr>
             <tr>
+              <td>
+                <p><b>Pay Criteria:</b> {{booking.payCriteria}}</p>
+              </td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="getBookingInfo(booking._id)" data-toggle="modal" data-target="#editModal">Update Details</button>
                 <button class="btn btn-sm btn-danger" (click)="cancelBooking(booking._id)">Cancel Booking</button>
@@ -145,10 +148,16 @@
             <label for="pinCode">Please Enter Pin Code</label>
             <input type="text" formControlName="pinCode" id="pinCode" class="form-control" [(ngModel)]="booking.pinCode">
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="timeSlot">Choose Time Slot For Serving:</label>
             <input type="radio" formControlName="timeSlot" [(ngModel)]="booking.timeSlot" value="Morning">Morning
             <input type="radio" formControlName="timeSlot" [(ngModel)]="booking.timeSlot" value="Evening">Evening
+          </div> -->
+          <div class="form-group radio-inline">
+            <label>Select Payment Criteria:</label><br>
+            <input formControlName="payCriteria" type="radio" name="payCriteria" value="perHour" [(ngModel)]="booking.payCriteria">Per Hour
+            <input formControlName="payCriteria" type="radio" name="payCriteria" value="perDay" [(ngModel)]="booking.payCriteria">Per Day
+            <input formControlName="payCriteria" type="radio" name="payCriteria" value="perMonth" [(ngModel)]="booking.payCriteria">Per Month
           </div>
           <button type="button" class="btn btn-success mr-auto" (click)="updateBooking(booking._id)" data-dismiss="modal">Update</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

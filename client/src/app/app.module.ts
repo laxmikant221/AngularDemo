@@ -26,6 +26,7 @@ import { EditServicesComponent } from './edit-services/edit-services.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { VerfiyUserComponent } from './verfiy-user/verfiy-user.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { ManageProfileComponent } from './userhome/manage-profile/manage-profile.component';
   @NgModule({
     declarations: [
     AppComponent,
@@ -40,7 +41,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     FilterPipe,
     EditServicesComponent,
     BookingHistoryComponent,
-    VerfiyUserComponent
+    VerfiyUserComponent,
+    ManageProfileComponent
     ],
     imports: [
     BrowserModule,

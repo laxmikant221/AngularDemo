@@ -23,7 +23,7 @@ bookingInfo:any;
     mobileNumber: new FormControl(null, Validators.required),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
-    timeSlot: new FormControl(null, Validators.required)
+    payCriteria: new FormControl(null, Validators.required)
   })
   constructor(private _user:UserService, private _router:Router, 
     private _http:HttpClient, private _servicedataService:ServiceDataService,

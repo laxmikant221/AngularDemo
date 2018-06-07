@@ -13,6 +13,7 @@ var schema = new Schema({
   // fromTime: {type: String, require:true},
   // toTime: {type: String, require:true},
   timeSlots: {type:Object, require:true},
+  payCriteria: {type:String, require:true},
   email: {type:String, require:true},
   creation_dt: {type:Date, require:true},
 });

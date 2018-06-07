@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { EditServicesComponent } from './edit-services/edit-services.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { VerfiyUserComponent } from './verfiy-user/verfiy-user.component';
+import { ManageProfileComponent } from './userhome/manage-profile/manage-profile.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'home', pathMatch:'full'},
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [RemainGuard]},
   {path: 'edit-services/:id', component: EditServicesComponent},
   {path: 'booking-history/:username', component: BookingHistoryComponent},
-  {path: 'verify/:verifyToken', component: VerfiyUserComponent}
+  {path: 'verify/:verifyToken', component: VerfiyUserComponent},
+  {path: 'manage-profile/:id', component: ManageProfileComponent, canActivate:[AuthService]}
 ];
 
 @NgModule({

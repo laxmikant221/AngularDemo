@@ -38,6 +38,7 @@ export class UserhomeComponent implements OnInit {
   previewData: any;
   notifications:any;
   notificationLength: String='';
+  exp:String='';
 
   searchForm:FormGroup = new FormGroup({
     search:new FormControl(null,Validators.minLength(4)) 
@@ -53,6 +54,7 @@ export class UserhomeComponent implements OnInit {
       Validators.maxLength(10)]),
     address: new FormControl(null, Validators.required),
     pinCode: new FormControl(null, Validators.required),
+    payCriteria: new FormControl(null, Validators.required),
     // serviceDate: new FormControl(null, Validators.required),
     // fromTime: new FormControl(null, Validators.required),
     // toTime: new FormControl(null, Validators.required),
@@ -88,7 +90,7 @@ export class UserhomeComponent implements OnInit {
             this.showSearchBox = false;
           },
           error=>{
-            swal("Ooops there was some error")
+            alert("Ooops there was some error")
           }
         )
       }
@@ -101,7 +103,7 @@ export class UserhomeComponent implements OnInit {
         this.ServceDescriptionData = data
       },
       error=>{
-        swal("Ooops there was some error")
+        alert("Ooops there was some error")
       }
     )
   }
@@ -125,7 +127,7 @@ export class UserhomeComponent implements OnInit {
   onSearchClick(searchKeyword) {
     this.searchword=searchKeyword;
     if(!this.searchForm.valid){
-      swal('Search Keyword must contain more than 3 characters',{icon: 'warning'}); return;
+      alert('Search Keyword must contain more than 3 characters',{icon: 'warning'}); return;
     }
     this._servicedataService.SearchByName(this.searchword)
     .subscribe(
@@ -155,7 +157,7 @@ export class UserhomeComponent implements OnInit {
     }
     else {
       this.showResults = false;
-      swal("You Must Log In first!!!!")
+      alert("You Must Log In first!!!!")
       localStorage.setItem('BookingServiceId', id);
       this._router.navigate(['login'])
     }
@@ -169,7 +171,7 @@ export class UserhomeComponent implements OnInit {
         localStorage.removeItem('BookingServiceId');
         this._router.navigate(['/login'])
       },
-      error=>swal(error)
+      error=>alert(error)
       )
   }
   proceed(id,serviceName) {
@@ -191,11 +193,14 @@ export class UserhomeComponent implements OnInit {
     this.serviceBookingForm.value.email = this.email;
     this.serviceBookingForm.value.serviceId = this.serviceId;
     this.serviceBookingForm.value.serviceName = this.serviceName;
+    this.exp =Date(this.serviceBookingForm.value.timeSlots.fromTime);
+    console.log(this.exp);
+    console.log(this.serviceBookingForm.value.timeSlots.fromTime);
     // if (this.serviceBookingForm.value.fromTime > this.serviceBookingForm.value.toTime) {
-    //   swal("Invalid Time Slot Range"); return;
+    //   alert("Invalid Time Slot Range"); return;
     // }
     if(!this.serviceBookingForm.valid){
-      swal('Invalid Form'); return;
+      alert('Invalid Form'); return;
     }
     this._user.bookServices(JSON.stringify(this.serviceBookingForm.value))
     .subscribe(
@@ -203,19 +208,14 @@ export class UserhomeComponent implements OnInit {
         this.previewData = Array.of(this.previewData)
         console.log(data)
         if(data == "booked") {
-          swal("This time slot already booked. Please choose another one.",{icon: "warning"});
+          alert("This time slot already booked. Please choose another one.",{icon: "warning"});
         } else {
-          swal("Congratulations.. Booking Successfull!!!!!!!!!!");
-          
-          console.log(this.previewData)
+          alert("Congratulations.. Booking Successfull!!!!!!!!!!");
         this.isBooking = false;
         this.isProceed = false; 
         this.showPreview = true;
-        // this.showSearchBox = true;
         localStorage.removeItem('BookingServiceId');
-        // this._router.navigate(['/user']);
-        }
-        
+        }        
       },
       error=>alert(error)
     )
@@ -233,12 +233,5 @@ export class UserhomeComponent implements OnInit {
     this.showPreview = false;
     this.showSearchBox = true;
   }
-
-  // function mobileNumberValidate(control: formControl) {
-  //   debugger
-  //   return {error: true};
-
-  // }
-
   
 }

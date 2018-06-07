@@ -31,6 +31,9 @@
       </div>
     </li>
     <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/manage-profile',userId]">Profile</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" (click)="logout()">Log out</a>
     </li>
   </ul>
@@ -214,6 +217,12 @@
       <button type="button" class="btn btn-warning btn-sm" (click)="addTimeSlots()">  Add Time-Slots
       </button>
     </div><br>
+    <div class="form-group radio-inline">
+      <label>Select Payment Criteria:</label><br>
+      <input formControlName="payCriteria" type="radio" name="payCriteria" value="perHour">Per Hour
+      <input formControlName="payCriteria" type="radio" name="payCriteria" value="perDay">Per Day
+      <input formControlName="payCriteria" type="radio" name="payCriteria" value="perMonth">Per Month
+    </div>
     <button type="button" class="btn btn-success btn-sm mr-auto" 
     (click)="confirmBooking()">Confirm Booking</button>
     <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">Go Back</button>
@@ -226,9 +235,9 @@
     <p><b>Customer Name:</b> {{preview.customerName | titlecase}}</p>
     <p><b>Mobile Number:</b> {{preview.mobileNumber | titlecase}}</p>
     <p><b>Address:</b> {{preview.address | titlecase}}</p>
-    <div class="container" *ngFor="let slot  of preview.timeSlots">
+    <div *ngFor="let slot  of preview.timeSlots">
       <p><b> Date:</b> {{slot.serviceDate | date}}</p>
-    <p><b>Time-Slot:</b> {{slot.fromTime}} -- {{slot.toTime}}</p>
+      <p><b>Time-Slot:</b> {{slot.fromTime}} -- {{slot.toTime}}</p>
     </div>
     
   </div>

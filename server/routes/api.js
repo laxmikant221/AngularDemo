@@ -13,7 +13,7 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "laxmikant.tripathi6@gmail.com",
-        pass: ""
+        pass: "9179669596"
     }
 });
 var rand,mailOptions,host,link,verifyToken;
@@ -288,6 +288,7 @@ router.post('/bookServices',function(req,res,next){
         address: req.body.address,
         pinCode: req.body.pinCode,
         timeSlots: req.body.timeSlots,
+        payCriteria: req.body.payCriteria,
         // serviceDate: req.body.serviceDate,
         // fromTime: req.body.fromTime,
         // toTime: req.body.toTime,

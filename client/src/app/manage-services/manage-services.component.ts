@@ -15,6 +15,9 @@ export class ManageServicesComponent implements OnInit {
   formFlag: boolean= false;
   url: '';
   filesToUpload: Array<File> = [];
+  filterHour: boolean=false;
+  filterDay:boolean = false;
+  filterMonth: boolean = false;
   constructor(private _router:Router, private _servicedataService:ServiceDataService,
     private _http:HttpClient, private _user:UserService) {
     this._servicedataService.listServices()
@@ -27,6 +30,15 @@ export class ManageServicesComponent implements OnInit {
   ngOnInit() {
   }
 
+  filterCheckBoxDay(){
+    this.filterDay = !this.filterDay;
+  }
+  filterCheckBoxHour(){
+    this.filterHour = !this.filterHour;
+  }
+  filterCheckBoxMonth(){
+    this.filterMonth = !this.filterMonth;
+  }
   addServices(data){
     this.services = data;
     this.serviceCount = this.services.length;

@@ -32,7 +32,7 @@
 
 
 <div class="container-fluid">
-  <div class="container col-sm-6" *ngIf="formFlag">
+  <div class="container col-sm-7" *ngIf="formFlag">
     <h3 class="text-center">New Services</h3>
     <form [formGroup]="serviceForm">
       <div class="form-group">
@@ -49,6 +49,7 @@
           <option>Electrician</option>
           <option>Peon</option>
           <option>Plumber</option>
+          <option>Sweeper</option>
           <option>Washerman</option>
         </select>
       </div>
@@ -59,18 +60,24 @@
         </textarea>
       </div>
       <fieldset formGroupName="price">
-        <div class="form-group ">
-          <label for="priceHour">Price Per Hour:</label>
-          <input type="text" formControlName="priceHour" id="priceHour" 
-          class="form-control"><br>
-
-          <label for="priceDay">Price Per Day:</label>
-          <input type="text" formControlName="priceDay" id="priceDay" 
-          class="form-control">
-
-          <label for="priceMonth">Price Per Month:</label>
-          <input type="text" formControlName="priceMonth" id="priceMonth" 
-          class="form-control">
+        <div class="form-group">
+          <label>Price:</label>
+          <div class="form-inline">
+            <label for="priceHour">Per Hour:</label>
+            <input type="checkbox"  (click)="filterCheckBoxHour()">
+            <label for="priceDay"> Per Day:</label>
+            <input type="checkbox"  (click)="filterCheckBoxDay()">
+            <label for="priceMonth"> Per Month:</label>
+            <input type="checkbox"  (click)="filterCheckBoxMonth()">
+          </div>
+          <div class="form-inline">
+            <input type="text" formControlName="priceHour" id="priceHour" 
+            class="form-control form-sm" *ngIf="filterHour" placeholder="Per Hour">
+            <input type="text" formControlName="priceDay" id="priceDay" 
+            class="form-control" *ngIf="filterDay" placeholder="Per Day">
+            <input type="text" formControlName="priceMonth" id="priceMonth" 
+            class="form-control" *ngIf="filterMonth" placeholder="Per Month">
+          </div>
         </div>
       </fieldset>
       <div class="form-group">
